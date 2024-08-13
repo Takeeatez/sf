@@ -37,19 +37,4 @@ public class UserController {
     public String main() {
         return "main";
     }
-
-    @GetMapping("/myPage")
-    public String showMyPagePage() {
-        return "myPage";
-    }
-
-    @GetMapping("/setting")
-    public String showSettingPage() {
-        return "setting";
-    }
-
-    @GetMapping("/webcam")
-    public String showMWebcamPage() {
-        return "webcam";
-    }
 }
