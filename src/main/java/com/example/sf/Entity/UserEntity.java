@@ -21,6 +21,9 @@ public class UserEntity {
     @Column(length = 12, unique = true, nullable = false)
     private String userId; // 사용자 아이디
 
+    @Column(length = 4, nullable = false)
+    private String userName;
+
     @Column(nullable = false)
     private String password; // 비밀번호
 
