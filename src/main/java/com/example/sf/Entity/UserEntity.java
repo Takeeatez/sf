@@ -47,12 +47,13 @@ public class UserEntity {
         @Getter
         private final String value;
 
-        Role(String key, String value){
+        Role(String key, String value) {
             this.key = key;
             this.value = value;
         }
     }
 
-    //@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    //private List<Fitness> fitnessRecords = new ArrayList<>();
+    // @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval =
+    // true)
+    // private List<Fitness> fitnessRecords = new ArrayList<>();
 }
