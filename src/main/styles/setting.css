@@ -1,3 +1,8 @@
+* {
+    box-sizing: border-box;
+    margin: 0%;
+}
+
 .setting {
     height: 100vh;
     width: 100%;
