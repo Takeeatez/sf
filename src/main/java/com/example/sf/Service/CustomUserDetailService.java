@@ -1,11 +1,14 @@
 package com.example.sf.Service;
+
 import com.example.sf.Entity.UserEntity;
 import com.example.sf.Repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.springframework.security.core.userdetails.User;
+import java.util.Collections;
+
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,10 +28,12 @@ public class CustomUserDetailService implements UserDetailsService {
         UserEntity userEntity = userRepository.findByUserId(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        return User.builder()
-                .username(userEntity.getUserId())
-                .password(userEntity.getPassword())
-                .roles("USER")
-                .build();
+        return new CustomUserDetails(
+                userEntity.getUserId(),
+                userEntity.getPassword(),
+                Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")),
+                userEntity.getUserName() // 추가 정보 전달
+        );
     }
+
 }

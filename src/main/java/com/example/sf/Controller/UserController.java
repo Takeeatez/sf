@@ -38,10 +38,10 @@ public class UserController {
         return "main";
     }
 
-    @GetMapping("/myPage")
-    public String showMyPagePage() {
-        return "myPage";
-    }
+    // @GetMapping("/myPage")
+    // public String showMyPagePage() {
+    // return "myPage";
+    // }
 
     @GetMapping("/setting")
     public String showSettingPage() {
