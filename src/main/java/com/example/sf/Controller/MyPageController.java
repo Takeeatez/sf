@@ -15,7 +15,8 @@ public class MyPageController {
         CustomUserDetails userDetails = (CustomUserDetails) authentication
                 .getPrincipal();
 
-        model.addAttribute("user", userDetails);
+        model.addAttribute("user", userDetails); // 모델에 '사용자 정보' 추가
+        model.addAttribute("consecutiveLoginDays", userDetails.getConsecutiveLoginDays()); // 모델에 '연속 로그인 일수' 추가
 
         return "myPage";
     }
