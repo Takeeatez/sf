@@ -47,7 +47,7 @@ public class UserEntity {
     private LocalDate lastLoginDate; // 마지막 로그인 날짜
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ExerciseRecordEntity> exerciseRecords; // 운동 기록 리스트
+    private List<FitRecordEntity> fitRecords; // 운동 기록 리스트
 
     // 사용자 역할 정의
     public enum Role {
@@ -75,8 +75,8 @@ public class UserEntity {
         this.lastLoginDate = today;
     }
 
-    public void addExerciseRecord(ExerciseRecordEntity record) {
-        this.exerciseRecords.add(record);
+    public void addFitRecord(FitRecordEntity record) {
+        this.fitRecords.add(record);
         record.setUser(this);
     }
 }

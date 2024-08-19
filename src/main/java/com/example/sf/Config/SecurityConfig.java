@@ -22,7 +22,7 @@ public class SecurityConfig {
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
                 http
                                 .authorizeHttpRequests((requests) -> requests
-                                                .requestMatchers("/login", "/register", "/resources/", "/main",
+                                                .requestMatchers("/", "/login", "/register", "/resources/", "/main",
                                                                 "/styles/**", "/scripts/**", "/images/**")
                                                 .permitAll() // 이 페이지는 로그인 안해도 뜸
                                                 .anyRequest().authenticated())

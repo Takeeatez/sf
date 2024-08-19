@@ -1,7 +1,7 @@
 package com.example.sf.Controller;
 
-import com.example.sf.DTO.ExerciseRecordDTO;
-import com.example.sf.Service.ExerciseRecordService;
+import com.example.sf.DTO.FitRecordDTO;
+import com.example.sf.Service.FitRecordService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -17,39 +17,39 @@ import org.springframework.security.core.Authentication;
 @Controller
 public class SettingController {
 
-    private final ExerciseRecordService exerciseRecordService;
+    private final FitRecordService fitRecordService;
 
-    public SettingController(ExerciseRecordService exerciseRecordService) {
-        this.exerciseRecordService = exerciseRecordService;
+    public SettingController(FitRecordService fitRecordService) {
+        this.fitRecordService = fitRecordService;
     }
 
     @GetMapping("/setting")
     public String showSettingPage(Model model, HttpSession session) {
-        ExerciseRecordDTO exerciseRecord = (ExerciseRecordDTO) session.getAttribute("exerciseRecord");
-        if (exerciseRecord == null) {
-            exerciseRecord = new ExerciseRecordDTO(); // 초기화
+        FitRecordDTO fitRecord = (FitRecordDTO) session.getAttribute("fitRecord");
+        if (fitRecord == null) {
+            fitRecord = new FitRecordDTO(); // 초기화
         }
-        model.addAttribute("exerciseRecord", exerciseRecord);
+        model.addAttribute("fitRecord", fitRecord);
         return "setting";
     }
 
     @PostMapping("/setting")
-    public String saveRepsAndSets(@ModelAttribute("exerciseRecord") ExerciseRecordDTO exerciseRecord,
+    public String saveCountsAndSets(@ModelAttribute("fitRecord") FitRecordDTO fitRecord,
             HttpSession session) {
-        ExerciseRecordDTO existingRecord = (ExerciseRecordDTO) session.getAttribute("exerciseRecord");
+        FitRecordDTO existingRecord = (FitRecordDTO) session.getAttribute("fitRecord");
         if (existingRecord != null) {
-            existingRecord.setReps(exerciseRecord.getReps());
-            existingRecord.setSets(exerciseRecord.getSets());
+            existingRecord.setCounts(fitRecord.getCounts());
+            existingRecord.setSets(fitRecord.getSets());
         } else {
-            existingRecord = exerciseRecord;
+            existingRecord = fitRecord;
         }
 
-        session.setAttribute("exerciseRecord", existingRecord);
+        session.setAttribute("fitRecord", existingRecord);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName();
 
-        exerciseRecordService.saveRepsAndSets(existingRecord.getReps(), existingRecord.getSets(), userId);
+        fitRecordService.saveCountsAndSets(existingRecord.getCounts(), existingRecord.getSets(), userId);
 
         return "redirect:/webcam";
     }

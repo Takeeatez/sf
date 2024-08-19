@@ -19,25 +19,25 @@
             </div>
             <div class="webcamPage__body__right">
                 <!--  -->
-                <form th:action="@{/webcam}" th:object="${exerciseRecord}" method="post">
+                <form th:action="@{/webcam}" th:object="${fitRecord}" method="post">
                     <div class="form-group">
-                        <label for="exerciseDate">Exercise Date:</label>
-                        <input type="date" id="exerciseDate" name="exerciseDate" th:field="*{exerciseDate}" required>
+                        <label for="fitDate">Fitness Date:</label>
+                        <input type="date" id="fitDate" name="fitDate" th:field="*{fitDate}" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="exerciseTime">Exercise Time:</label>
-                        <input type="time" id="exerciseTime" name="exerciseTime" th:field="*{exerciseTime}" required>
+                        <label for="fitTime">Fitness Time:</label>
+                        <input type="time" id="fitTime" name="fitTime" th:field="*{fitTime}" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="achievementRate">Achievement Rate (%):</label>
-                        <input type="number" id="achievementRate" name="achievementRate" th:field="*{achievementRate}"
-                            min="0" max="100" step="0.1" required>
+                        <label for="rate">Achievement Rate (%):</label>
+                        <input type="number" id="rate" name="rate" th:field="*{rate}" min="0" max="100" step="0.1"
+                            required>
                     </div>
 
                     <div class="form-group">
-                        <button type="submit">Save Exercise Record</button>
+                        <button type="submit">Save Fitness Record</button>
                     </div>
                 </form>
                 <!-- <p>Tip.</p> -->

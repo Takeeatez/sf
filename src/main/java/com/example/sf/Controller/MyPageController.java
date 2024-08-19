@@ -1,8 +1,8 @@
 package com.example.sf.Controller;
 
-import com.example.sf.DTO.ExerciseRecordDTO;
+import com.example.sf.DTO.FitRecordDTO;
 import com.example.sf.Service.CustomUserDetails;
-import com.example.sf.Service.ExerciseRecordService;
+import com.example.sf.Service.FitRecordService;
 
 // import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -19,10 +19,10 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class MyPageController {
 
-    private final ExerciseRecordService exerciseRecordService;
+    private final FitRecordService fitRecordService;
 
-    public MyPageController(ExerciseRecordService exerciseRecordService) {
-        this.exerciseRecordService = exerciseRecordService;
+    public MyPageController(FitRecordService fitRecordService) {
+        this.fitRecordService = fitRecordService;
     }
 
     @GetMapping("/myPage")
@@ -33,22 +33,22 @@ public class MyPageController {
 
         model.addAttribute("user", userDetails); // 모델에 '사용자 정보' 추가
         model.addAttribute("consecutiveLoginDays", userDetails.getConsecutiveLoginDays()); // 모델에 '연속 로그인 일수' 추가
-        model.addAttribute("exerciseRecord", new ExerciseRecordDTO()); // 모델에 ExerciseRecordDTO 객체 추가
+        model.addAttribute("fitRecord", new FitRecordDTO()); // 모델에 FitRecordDTO 객체 추가
 
         return "myPage";
     }
 
     @PostMapping("/myPage")
-    public String saveExerciseType(@ModelAttribute("exerciseRecord") ExerciseRecordDTO exerciseRecord,
+    public String saveFitType(@ModelAttribute("fitRecord") FitRecordDTO fitRecord,
             HttpSession session) {
         // 세션에 저장 (유지하기 위해)
-        session.setAttribute("exerciseRecord", exerciseRecord);
+        session.setAttribute("fitRecord", fitRecord);
 
         // 운동 종목을 DB에 저장
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName();
 
-        exerciseRecordService.saveExerciseType(exerciseRecord.getExerciseType(), userId);
+        fitRecordService.saveFitType(fitRecord.getFitType(), userId);
 
         return "redirect:/setting";
     }

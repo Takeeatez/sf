@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Exercise Settings</title>
+    <title>Fitness Settings</title>
     <link th:href="@{/styles/setting.css}" rel="stylesheet">
 </head>
 
 <body>
     <div class="setting">
         <div class="setting__header">
-            <h2 th:text="'설정 페이지: ' + ${exerciseRecord.exerciseType}"></h2>
+            <h2 th:text="'설정 페이지: ' + ${fitRecord.fitType}"></h2>
         </div>
         <div class="setting__body">
             <div class="setting__body__left">
@@ -20,16 +20,16 @@
                     <img src="images/squat.jpg">
                 </div>
                 <div class="setting__body__left__info">
-                    <p th:text="${exercise}">운동 이름</p>
+                    <p th:text="${fit}">운동 이름</p>
                     <p>Tip. ㅁㅁㅁㅁ ㅁㅁㅁ ㅁㅁㅁ ㅁㅁㅁㅁㅁ.</p>
                 </div>
             </div>
             <div class="setting__body__right">
                 <!-- // -->
-                <form th:action="@{/setting}" th:object="${exerciseRecord}" method="post">
+                <form th:action="@{/setting}" th:object="${fitRecord}" method="post">
                     <div class="form-group">
-                        <label for="reps">Reps:</label>
-                        <input type="number" id="reps" th:field="*{reps}" min="1" required />
+                        <label for="counts">Counts:</label>
+                        <input type="number" id="counts" th:field="*{counts}" min="1" required />
                     </div>
                     <div class="form-group">
                         <label for="sets">Sets:</label>
@@ -42,7 +42,7 @@
                 <!-- <form th:action="@{/webcam}" method="get">
                     <div>
                         <p>세트별 시행 횟수</p><br />
-                        <input type="number" name="reps" placeholder="세트별 시행 횟수" required>
+                        <input type="number" name="counts" placeholder="세트별 시행 횟수" required>
                     </div>
                     <div>
                         <p>세트 수</p><br />

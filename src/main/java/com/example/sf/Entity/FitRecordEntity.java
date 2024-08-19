@@ -11,9 +11,9 @@ import java.time.LocalDate;
 @ToString
 @Builder
 @AllArgsConstructor
-@Table(name = "exercise_record")
+@Table(name = "fit_record")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ExerciseRecordEntity {
+public class FitRecordEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,10 +23,10 @@ public class ExerciseRecordEntity {
     @JoinColumn(name = "user_id", referencedColumnName = "userId")
     private UserEntity user;
 
-    private String exerciseType;// 운동 종목
-    private int reps; // 횟수
+    private String fitType;// 운동 종목
+    private int counts; // 횟수
     private int sets; // 세트 수
-    private LocalDate exerciseDate; // 운동 날짜
-    private String exerciseTime; // 운동 시간
-    private double achievementRate; // 달성률
+    private LocalDate fitDate; // 운동 날짜
+    private String fitTime; // 운동 시간
+    private double rate; // 달성률
 }
