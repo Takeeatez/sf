@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -29,15 +30,16 @@ public class CustomUserDetailService implements UserDetailsService {
         UserEntity userEntity = userRepository.findByUserId(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        // Role 타입을 String으로 변환하여 SimpleGrantedAuthority 생성자에 전달
-        String role = userEntity.getRole().name(); // Role enum의 이름을 String으로 변환
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role);
+        // UserEntity의 역할을 가져옵니다.
+        String role = "ROLE_" + userEntity.getRole().name(); // ROLE_ADMIN 또는 ROLE_USER
 
-        return new CustomUserDetails(
+        // Spring Security의 User 클래스를 사용하여 권한을 설정합니다.
+        return new User(
                 userEntity.getUserId(),
                 userEntity.getPassword(),
-                Collections.singletonList(authority),
-                userEntity.getUserName() // 추가 정보 전달
+                Collections.singletonList(new SimpleGrantedAuthority(role))
         );
     }
 }
+
+
