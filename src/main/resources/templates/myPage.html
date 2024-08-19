@@ -32,12 +32,21 @@
             </div>
             <div class="mypage__left__footer">
                 <p>원하시는 종목을 선택하세요.</p>
-                <div class="test">
-                    <!-- <a th:href="@{/Setting(exercise='스쿼트')}" class="mypage__left__footer__list">스쿼트</a>
-                    <a th:href="@{/Setting(exercise='아령')}" class="mypage__left__footer__list">아령</a> -->
+                <!-- // -->
+                <form th:action="@{/myPage}" th:object="${exerciseRecord}" method="post">
+                    <div class="form-group">
+                        <label for="exerciseType">운동 종목</label>
+                        <select id="exerciseType" th:field="*{exerciseType}" onchange="this.form.submit()" required>
+                            <option value="">운동 종목을 선택하세요</option>
+                            <option value="Squat">스쿼트</option>
+                            <option value="Dumbbell">아령</option>
+                        </select>
+                    </div>
+                </form>
+                <!-- <div class="test">
                     <a href="/setting?exercise=스쿼트" class="mypage__left__footer__list">스쿼트</a>
                     <a href="/setting?exercise=아령" class="mypage__left__footer__list">아령</a>
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="mypage__right">

@@ -3,6 +3,7 @@ package com.example.sf.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -45,6 +46,9 @@ public class UserEntity {
     @Column(name = "last_login_date")
     private LocalDate lastLoginDate; // 마지막 로그인 날짜
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ExerciseRecordEntity> exerciseRecords; // 운동 기록 리스트
+
     // 사용자 역할 정의
     public enum Role {
         USER("USER", "회원"),
@@ -69,5 +73,10 @@ public class UserEntity {
             this.consecutiveLoginDays = 1;
         }
         this.lastLoginDate = today;
+    }
+
+    public void addExerciseRecord(ExerciseRecordEntity record) {
+        this.exerciseRecords.add(record);
+        record.setUser(this);
     }
 }
