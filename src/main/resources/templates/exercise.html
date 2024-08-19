@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>운동 설정</title>
+    <link rel="stylesheet" th:href="@{/styles/exercise.css}">
+</head>
+<body>
+<div class="exercise-container">
+    <a href="/main" class="back-button"></a>
+    <h1>운동 설정</h1>
+    <form action="/saveExercise" method="post" class="exercise-form">
+        <div class="exercise-group">
+            <select id="exercise1" name="exercise1">
+                <option th:each="exercise : ${exercises}"
+                        th:value="${exercise.fitId}"
+                        th:text="${exercise.name}">스쿼트</option>
+            </select>
+            <input type="number" id="sets1" name="sets1" placeholder="세트 수" min="1" max="10">
+            <input type="number" id="reps1" name="reps1" placeholder="횟수" min="1" max="100">
+        </div>
+
+        <div class="exercise-group">
+            <select id="exercise2" name="exercise2">
+                <option th:each="exercise : ${exercises}"
+                        th:value="${exercise.fitId}"
+                        th:text="${exercise.name}">아령</option>
+            </select>
+            <input type="number" id="sets2" name="sets2" placeholder="세트 수" min="1" max="10">
+            <input type="number" id="reps2" name="reps2" placeholder="횟수" min="1" max="100">
+        </div>
+
+        <button type="submit" class="save-button">설정 저장</button>
+    </form>
+</div>
+</body>
+</html>

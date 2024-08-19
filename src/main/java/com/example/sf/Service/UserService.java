@@ -28,6 +28,7 @@ public class UserService {
         UserEntity userEntity = UserEntity.builder()
                 .userId(userDTO.getUserId())
                 .password(encodedPassword)
+                .userName(userDTO.getUserName())
                 .email(userDTO.getEmail())
                 .phone(userDTO.getPhone())
                 .role(UserEntity.Role.USER) // 기본 역할은 USER
@@ -71,6 +72,7 @@ public class UserService {
         if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
             userEntity.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         }
+        userEntity.setUserName(userDTO.getUserName());
         userEntity.setEmail(userDTO.getEmail());
         userEntity.setPhone(userDTO.getPhone());
 
@@ -89,6 +91,7 @@ public class UserService {
         return UserDTO.builder()
                 .id(userEntity.getId())
                 .userId(userEntity.getUserId())
+                .userName(userEntity.getUserName())
                 .email(userEntity.getEmail())
                 .phone(userEntity.getPhone())
                 .build();

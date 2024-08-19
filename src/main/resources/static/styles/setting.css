@@ -1,0 +1,129 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1C1F1B;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #D2FFD2;
+}
+
+.setting {
+    background-color: #2A2D28;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+    width: 90%;
+    max-width: 800px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.setting__header {
+    text-align: center;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.setting__header h2 {
+    font-size: 1.8em;
+    color: #D2FFD2;
+    margin: 0;
+}
+
+.setting__body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    width: 100%;
+}
+
+.setting__body__left,
+.setting__body__right {
+    flex: 1;
+    min-width: 200px;
+}
+
+.setting__body__left__picture {
+    width: 100%;
+    max-width: 250px;
+    margin: 0 auto;
+    background-color: #5A5D58;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.setting__body__left__picture img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.setting__body__left__info {
+    margin-top: 20px;
+    text-align: center;
+    color: #A9CCA9;
+}
+
+.setting__body__left__info p:first-child {
+    font-size: 1.4em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #D2FFD2;
+}
+
+.setting__body__left__info p:last-child {
+    font-size: 0.95em;
+    line-height: 1.4;
+}
+
+.setting__body__right form {
+    display: flex;
+    flex-direction: column;
+    margin: 40px;
+    gap: 20px;
+}
+
+.setting__body__right form p {
+    font-size: 1.1em;
+    margin-bottom: 5px;
+    color: #D2FFD2;
+}
+
+.setting__body__right form input {
+    padding: 10px;
+    border: 1px solid #5A5D58;
+    border-radius: 8px;
+    font-size: 1em;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #1C1F1B;
+    color: #D2FFD2;
+}
+
+.setting__body__right form input::placeholder {
+    color: #A9CCA9;
+}
+
+.setting__body__right form button {
+    padding: 12px 20px;
+    background-color: #4CAF50;
+    color: #D2FFD2;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.setting__body__right form button:hover {
+    background-color: #388E3C;
+}

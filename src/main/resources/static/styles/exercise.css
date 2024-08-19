@@ -1,0 +1,97 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1C1F1B;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #D2FFD2;
+}
+
+.exercise-container {
+    position: relative;
+    background-color: #2A2D28;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+}
+
+.back-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.back-button::before {
+    content: '';
+    border: solid #4CAF50;
+    border-width: 0 4px 4px 0;
+    display: inline-block;
+    padding: 6px;
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+}
+
+h1 {
+    margin-bottom: 24px;
+    font-size: 1.8em;
+    color: #D2FFD2;
+}
+
+.exercise-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.exercise-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+select, input {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #5A5D58;
+    background-color: #1C1F1B;
+    color: #D2FFD2;
+    font-size: 1em;
+}
+
+select {
+    width: 150px;
+}
+
+input {
+    width: 100px;
+    text-align: center;
+}
+
+button.save-button {
+    padding: 12px;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+}
+
+button.save-button:hover {
+    background-color: #388E3C;
+}
