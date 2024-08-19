@@ -16,7 +16,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/login")
+    @GetMapping({ "/", "/login" })
     public String login(Model model) {
         return "login";
     }
@@ -36,20 +36,5 @@ public class UserController {
     @GetMapping("/main")
     public String main() {
         return "main";
-    }
-
-    // @GetMapping("/myPage")
-    // public String showMyPagePage() {
-    // return "myPage";
-    // }
-
-    @GetMapping("/setting")
-    public String showSettingPage() {
-        return "setting";
-    }
-
-    @GetMapping("/webcam")
-    public String showMWebcamPage() {
-        return "webcam";
     }
 }

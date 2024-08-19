@@ -12,20 +12,18 @@
     <div class="container mypage">
         <div class="mypage__left">
             <div class="mypage__left__header">
-                <h2 th:text="${user.userName} + '님, n번 연속으로 접속하셨네요!'">사용자님, n번 연속으로 접속하셨네요!</h2>
+                <h2 th:text="${consecutiveLoginDays} + '번 연속으로 접속하셨네요!'"></h2>
             </div>
             <div class="mypage__left__body">
                 <div class="mypage__left__body__profile">
                     <div class="mypage__left__body__profile__picture"
                         onclick="document.getElementById('fileInput').click()">
-                        <!-- <img th:src="${user.profilePicture}" alt="Profile" style="width: 100%; height: 100%;" /> -->
                         <img id="profileImage" src="/images/profile.jpg" />
                         <input id="fileInput" type="file" style="display: none;" accept="image/*"
                             onchange="uploadImage(event)" />
                     </div>
                     <div class="mypage__left__body__profile__user">
-                        <!-- <p th:text="'UsersName : ' + ${user.userName}">UsersName : 사용자 이름</p> -->
-                        <p>사용자 이름</p>
+                        <p th:text="'UsersName : ' + ${user.userName}" />
                     </div>
                 </div>
                 <div class="mypage__left__body__graph">
@@ -34,12 +32,21 @@
             </div>
             <div class="mypage__left__footer">
                 <p>원하시는 종목을 선택하세요.</p>
-                <div class="test">
-                    <!-- <a th:href="@{/Setting(exercise='스쿼트')}" class="mypage__left__footer__list">스쿼트</a>
-                    <a th:href="@{/Setting(exercise='아령')}" class="mypage__left__footer__list">아령</a> -->
-                    <a href="/setting?exercise=스쿼트" class="mypage__left__footer__list">스쿼트</a>
-                    <a href="/setting?exercise=아령" class="mypage__left__footer__list">아령</a>
-                </div>
+                <!-- // -->
+                <form th:action="@{/myPage}" th:object="${fitRecord}" method="post">
+                    <div class="form-group">
+                        <label for="fitType">운동 종목</label>
+                        <select id="fitType" th:field="*{fitType}" onchange="this.form.submit()" required>
+                            <option value="">운동 종목을 선택하세요</option>
+                            <option value="Squat">스쿼트</option>
+                            <option value="Dumbbell">아령</option>
+                        </select>
+                    </div>
+                </form>
+                <!-- <div class="test">
+                    <a href="/setting?fit=스쿼트" class="mypage__left__footer__list">스쿼트</a>
+                    <a href="/setting?fit=아령" class="mypage__left__footer__list">아령</a>
+                </div> -->
             </div>
         </div>
         <div class="mypage__right">
