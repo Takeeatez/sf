@@ -96,17 +96,45 @@
                     </thead>
                     <tbody>
                     <tr th:each="exercise : ${exercises}">
-                        <td th:text="${exercise.id}">1</td>
+                        <td th:text="${exercise.fitId}">1</td>
                         <td th:text="${exercise.name}">Running</td>
                         <td th:text="${exercise.description}">Cardio exercise</td>
                         <td>
-                            <a href="#" th:href="@{/admin/editExercise/{id}(id=${exercise.id})}" class="btn btn-sm btn-warning">Edit</a>
-                            <a href="#" th:href="@{/admin/deleteExercise/{id}(id=${exercise.id})}" class="btn btn-sm btn-danger">Delete</a>
+                            <a href="#" th:href="@{/admin/editExercise/{id}(id=${exercise.fitId})}" class="btn btn-sm btn-warning">Edit</a>
+                            <a href="#" th:href="@{/admin/deleteExercise/{id}(id=${exercise.fitId})}" class="btn btn-sm btn-danger">Delete</a>
                         </td>
                     </tr>
                     </tbody>
                 </table>
-                <a href="#" th:href="@{/admin/addExercise}" class="btn btn-primary">Add New Exercise</a>
+                <!-- Trigger the modal with a button -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addExerciseModal">
+                    Add New Exercise
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addExerciseModal" tabindex="-1" aria-labelledby="addExerciseModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addExerciseModalLabel">Add New Exercise</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form th:action="@{/admin/addExercise}" method="post">
+                    <div class="mb-3">
+                        <label for="exerciseName" class="form-label">Exercise Name</label>
+                        <input type="text" class="form-control" id="exerciseName" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exerciseDescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="exerciseDescription" name="description" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Exercise</button>
+                </form>
             </div>
         </div>
     </div>
