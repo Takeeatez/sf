@@ -141,10 +141,8 @@ def analyze_squat(detector, img):
         if heel[2] < ankle_x - 10:  # y좌표가 더 작으면 (화면상 더 위에 있으면) 발뒤꿈치가 들린 것
             feedback.append("발뒤꿈치가 들리지 않도록 주의하세요. 무게 중심을 뒤쪽으로 유지하세요.")
 
-    # 운동 진행도 계산 (0%: 선 자세, 100%: 완전히 앉은 자세)
-    progress = np.interp(hip_knee_ankle_angle, (70, 160), (100, 0))
 
-    return hip_knee_ankle_angle, progress, feedback
+    return hip_knee_ankle_angle, feedback
 
 def analyze_pushup(detector, img):
     # 오른쪽 팔꿈치 각도
