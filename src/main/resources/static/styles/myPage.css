@@ -1,45 +1,176 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #1C1F1B;
+body,
+html {
     margin: 0;
     padding: 0;
+    font-family: 'Arial', sans-serif;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background-color: #000;
+    font-weight: bold;
+}
+
+header {
+    padding-top: 20px;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    top: 0;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
     display: flex;
     justify-content: center;
     align-items: center;
+    justify-content: space-between;
+    margin: 0;
+    padding: 0;
+    padding-right: 30px;
+    padding-left: 30px;
+}
+
+header nav ul li {
+    margin: 0 15px;
+}
+
+header nav ul li a {
+    color: #444;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 24px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+header nav ul li a:hover {
+    color: rgba(255, 255, 255, 0.5);
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.SmartFit {
+    color: #444;
+    font-weight: bold;
+    font-size: 30px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+
+}
+
+.SmartFit:hover {
+    color: rgba(255, 255, 255, 0.5);
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.navbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+/* ----------header.css---------- */
+
+.main-container {
+    position: relative;
     height: 100vh;
-    color: #D2FFD2;
-}
-
-.container.mypage {
+    background-image: url('../images/mypage.jpg');
+    background-size: cover;
+    background-position: center;
     display: flex;
-    width: 90%;
-    max-width: 1200px;
-    background-color: #2A2D28;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
-    overflow: hidden;
-    gap: 5px;
+    justify-content: center;
 }
 
-.mypage__left,
-.mypage__right {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+.sidebar {
+    width: 300px;
+    padding: 60px;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    padding-top: 160px;
 }
 
-.mypage__left {
+.sidebar section {
+    margin-bottom: 30px;
+}
+
+h2 {
+    font-size: 24px;
+    color: #76B582;
+    margin-bottom: 15px;
+}
+
+.info-details {
+    font-size: 18px;
+    color: #444;
+}
+
+.btn {
+    margin-top: 30px;
+    display: inline-block;
+    padding: 15px 30px;
+    background-color: #444;
+    color: white;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 20px;
+    transition: background-color 0.3s ease;
+    text-align: left;
+}
+
+.btn:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+    color: #444;
+}
+
+.content {
     flex: 1;
-    background-color: #1C1F1B;
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    overflow-y: none;
+    padding-top: 90px;
 }
 
-.mypage__left__header h2 {
-    font-size: 1.8em;
-    color: #D2FFD2;
-    margin: 0 0 20px 0;
+.recent-workouts {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+.workouts-list {
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.workout {
+    border-top: 2px solid #e0e0e0;
+    padding-top: 15px;
+    margin-top: 15px;
+    color: #444;
+}
+
+.workout-daily {
+    display: flex;
+    flex-direction: row;
+    gap: 60px;
+}
+
+.workout:first-child {
+    border-top: none;
+    padding-top: 0;
+    margin-top: 0;
+}
+
+.workout h3 {
+    font-size: 20px;
+    margin-bottom: 5px;
+    color: #76B582;
+}
+
+.workout p {
+    margin: 5px 0;
+}
+
+/* ---------------- */
 .mypage__left__body__profile {
     display: flex;
     align-items: center;
@@ -51,12 +182,17 @@ body {
     width: 100px;
     height: 100px;
     overflow: hidden;
-    background-color: #5A5D58;
+    background-color: #bbb;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 50%;
+    margin-top: 40px;
+}
+
+.mypage__left__body__profile__picture:hover {
+    background-color: #888;
 }
 
 .mypage__left__body__profile__picture img {
@@ -68,71 +204,4 @@ body {
 .mypage__left__body__profile__user p {
     font-size: 1.2em;
     color: #D2FFD2;
-}
-
-.mypage__left__body__graph {
-    background-color: #5A5D58;
-    border-radius: 12px;
-    height: 200px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #A9CCA9;
-    font-size: 1.2em;
-}
-
-.mypage__left__footer p {
-    font-size: 1.1em;
-    color: #A9CCA9;
-    margin-top: 20px;
-}
-
-.mypage__left__footer__list {
-    display: inline-block;
-    padding: 10px 20px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    background-color: #4CAF50;
-    color: #D2FFD2;
-    text-decoration: none;
-    border-radius: 8px;
-    font-size: 1em;
-    transition: background-color 0.3s;
-}
-
-.mypage__left__footer__list:hover {
-    background-color: #388E3C;
-}
-
-.mypage__right {
-    flex: 1;
-    background-color: #1C1F1B;
-    border-left: 1px solid #5A5D58;
-}
-
-.mypage__right__header h3 {
-    font-size: 1.4em;
-    color: #D2FFD2;
-    margin: 0 0 20px 0;
-}
-
-.mypage__right__list {
-    background-color: #5A5D58;
-    padding: 20px;
-    border-radius: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.mypage__right__list__left p,
-.mypage__right__list__right p {
-    margin: 5px 0;
-    color: #D2FFD2;
-    font-size: 1em;
-}
-
-.mypage__right__list__right {
-    text-align: right;
 }

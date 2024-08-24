@@ -1,14 +1,123 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Page</title>
+    <link rel="stylesheet" th:href="@{/styles/myPage.css}">
 </head>
+
 <body>
-<h1>My Page</h1>
-<p>this is tests code1</p>
-<p>User Name: <span th:text="${userName}">User Name</span></p>
-<p>가입 날짜: <span th:text="${createdAt}">가입 날짜</span></p>
+
+    <header>
+        <nav>
+            <ul>
+                <div>
+                    <li><a th:href="@{/main}" class="SmartFit">SmartFit</a></li>
+                </div>
+                <div class="navbar">
+                    <li><a th:href="@{/logout}">Logout</a></li>
+                    <li><a th:href="@{/aboutUs}">About Us</a></li>
+                </div>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="main-container">
+        <aside class="sidebar">
+            <section class="user-info">
+                <h2>회원 정보</h2>
+                <div class="info-details">
+                    <div class="mypage__left__body__profile__picture"
+                        onclick="document.getElementById('fileInput').click()">
+                        <img id="profileImage" th:src="@{/path/to/default-image.jpg}">
+                        <input id="fileInput" type="file" style="display: none;" accept="image/*"
+                            onchange="uploadImage(event)">
+                    </div>
+                    <p>이름 : 홍길동</p>
+                    <!-- <p th:text="'이름 : ' + ${user.userName}" /> -->
+                    <p>가입일 : 2023-01-15</p>
+                    <!-- <p th:text="'가입일 : ' + ${user.joinDate}" /> -->
+                    <p>현재 연속 출석일 : 10일</p>
+                    <!-- <p th:text="'현재 연속 출석일 : ' + ${user.???}" />  -->
+                    <!-- "연속 출석일" 변수 필요 -->
+                </div>
+                <a th:href="@{/setting}" class="btn">운동하기</a>
+            </section>
+        </aside>
+
+        <main class="content">
+            <section class="recent-workouts">
+                <h2>최근 운동 기록</h2>
+                <div class="workouts-list">
+                    <div class="workout">
+                        <h3>2024-08-20</h3>
+                        <p>운동(정확도) : 풀업 00%</p>
+                        <p>시간 : 1시간 30분</p>
+                        <p>횟수 : 10회</p>
+                        <p>세트 수 : 3세트</p>
+                    </div>
+                    <div class="workout">
+                        <h3>2024-08-18</h3>
+                        <div class="workout-daily">
+                            <div>
+                                <p>운동(정확도) : 스쿼트 00%</p>
+                                <p>시간 : 1시간 15분</p>
+                                <p>횟수 : 10회</p>
+                                <p>세트 수 : 3세트</p>
+                            </div>
+                            <div>
+                                <p>운동(정확도) : 스쿼트 00%</p>
+                                <p>시간 : 1시간 15분</p>
+                                <p>횟수 : 10회</p>
+                                <p>세트 수 : 3세트</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="workout">
+                        <h3>2024-08-16</h3>
+                        <p>운동(정확도) : 푸쉬업 00%</p>
+                        <p>시간 : 1시간</p>
+                        <p>횟수 : 10회</p>
+                        <p>세트 수 : 3세트</p>
+                    </div>
+                    <div class="workout">
+                        <h3>2024-08-16</h3>
+                        <p>운동(정확도) : 푸쉬업 00%</p>
+                        <p>시간 : 1시간</p>
+                        <p>횟수 : 10회</p>
+                        <p>세트 수 : 3세트</p>
+                    </div>
+                    <div class="workout">
+                        <h3>2024-08-16</h3>
+                        <p>운동(정확도) : 푸쉬업 00%</p>
+                        <p>시간 : 1시간</p>
+                        <p>횟수 : 10회</p>
+                        <p>세트 수 : 3세트</p>
+                    </div>
+                    <div class="workout">
+                        <h3>2024-08-16</h3>
+                        <p>운동(정확도) : 푸쉬업 00%</p>
+                        <p>시간 : 1시간</p>
+                        <p>횟수 : 10회</p>
+                        <p>세트 수 : 3세트</p>
+                    </div>
+                    <!-- 운동 기록이 더 많을 경우, 이 곳에 추가 -->
+                </div>
+            </section>
+        </main>
+    </div>
+    <script>
+        function uploadImage(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                document.querySelector('.mypage__left__body__profile__picture img').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    </script>
 </body>
+
 </html>

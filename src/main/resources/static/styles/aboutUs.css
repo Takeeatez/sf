@@ -35,7 +35,7 @@ header nav ul li {
 }
 
 header nav ul li a {
-    color: #888;
+    color: #ccc;
     font-weight: bold;
     text-decoration: none;
     font-size: 24px;
@@ -43,20 +43,19 @@ header nav ul li a {
 }
 
 header nav ul li a:hover {
-    color: rgba(0, 0, 0, 1);
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    text-shadow: 1px rgba(0, 0, 0, 0.2);
 }
 
 .SmartFit {
-    color: #444;
+    color: #ccc;
     font-weight: bold;
     font-size: 30px;
     text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
-
 }
 
 .SmartFit:hover {
-    color: rgba(255, 255, 255, 0.5);
+    color: #fff;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
 
@@ -66,17 +65,17 @@ header nav ul li a:hover {
     justify-content: space-between;
 }
 
-/* ----------main container styles---------- */
+/* ----------header.css---------- */
 
-.main-container {
+.hero {
     position: relative;
     height: 100vh;
-    background-image: url('../images/setting.jpg');
+    background-image: url('../images/main.jpg');
     background-size: cover;
     background-position: center;
     display: flex;
-    justify-content: flex-end;
-    padding: 0 18%;
+    align-items: center;
+    justify-content: center;
 }
 
 .overlay {
@@ -89,88 +88,43 @@ header nav ul li a:hover {
     z-index: 1;
 }
 
-.exercise-selection {
-    margin-top: 15%;
+.login-container {
     position: relative;
     z-index: 2;
-    text-align: center;
+    padding: 30px;
+    background-color: rgba(2555, 255, 255, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    text-align: end;
     color: white;
-    width: 90%;
-    max-width: 400px;
+    width: 60%;
 }
 
-h2 {
-    text-align: left;
-    color: #444;
-    font-size: 48px;
-    margin: 30px;
-    line-height: 1.1;
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+h1 {
+    margin-bottom: 48px;
+    font-size: 40px;
+    color: #ffffff;
 }
 
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
+p {
+    margin-bottom: 48px;
+    font-size: 25px;
+    color: #ffffff;
 }
 
-label {
-    text-align: left;
-    font-size: 24px;
-    font-weight: bold;
-    color: #888;
-}
-
-select,
-input {
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #fff;
-    background-color: rgba(255, 255, 255, 0.4);
-    color: #888;
-    font-size: 1.2em;
-    width: 80%;
-    box-sizing: border-box;
-}
-
-select {
-    width: 100%;
-}
-
-button,
-.btn {
+button {
     padding: 12px;
-    background-color: #444;
+    background-color: rgba(2555, 255, 255, 0.4);
     border: none;
-    border-radius: 50px;
+    border-radius: 8px;
     color: white;
     font-size: 1.2em;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-button:hover,
-.btn:hover {
-    background-color: rgba(255, 255, 255, 0.5);
-    color: #444;
+button:hover {
+    background-color: rgba(2555, 255, 255, 0.8);
+    color: #5A5D58;
     border: none;
-}
-
-.exercise-image img {
-    width: 100%;
-    max-width: 300px;
-    border-radius: 10px;
-    margin-top: 20px;
-}
-
-.register {
-    display: block;
-    margin-top: 20px;
-    text-decoration: none;
-    color: #ffffff;
-    font-size: 1em;
-}
-
-.register:hover {
-    text-decoration: underline;
 }

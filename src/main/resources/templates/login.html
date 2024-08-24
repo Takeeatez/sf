@@ -5,23 +5,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login</title>
-    <link th:href="@{/styles/login.css}" rel="stylesheet">
-    <script src="scripts/login.js"></script>
+    <link href="styles/login.css" rel="stylesheet">
 </head>
 
 <body>
-    <div class="login-container">
-        <h1>Login</h1>
-        <form th:action="@{/login}" method="post">
-            <label for="userId">Id:</label>
-            <input type="text" id="userId" name="userId" required>
+    <header>
+        <nav>
+            <ul>
+                <div>
+                    <li><a th:href="@{/main}" class="SmartFit">SmartFit</a></li>
+                </div>
+                <div class="navbar">
+                    <li><a th:href="@{/aboutUs}">About Us</a></li>
+                </div>
+            </ul>
+        </nav>
+    </header>
+    <div class="hero">
+        <div class="overlay"></div>
+        <div class="login-container">
+            <h1>Login</h1>
+            <form th:action="@{/login}" method="post">
+                <label for="userid">Id :</label>
+                <input type="text" id="userId" name="userId" required>
 
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
+                <label for="password">Password :</label>
+                <input type="password" id="password" name="password" required>
 
-            <button type="submit">Login</button>
-        </form>
-        <a th:href="@{/register}">Register</a>
+                <button type="submit">Login</button>
+            </form>
+            <a th:href="@{/register}" class="register">Register</a>
+        </div>
     </div>
 </body>
 

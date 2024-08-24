@@ -1,29 +1,110 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #1C1F1B;
+body,
+html {
     margin: 0;
     padding: 0;
+    font-family: 'Arial', sans-serif;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background-color: #000;
+}
+
+header {
+    padding-top: 20px;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    top: 0;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
     display: flex;
     justify-content: center;
     align-items: center;
+    justify-content: space-between;
+    margin: 0;
+    padding: 0;
+    padding-right: 30px;
+    padding-left: 30px;
+}
+
+header nav ul li {
+    margin: 0 15px;
+}
+
+header nav ul li a {
+    color: #ccc;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 24px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+header nav ul li a:hover {
+    color: #fff;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.SmartFit {
+    color: #ccc;
+    font-weight: bold;
+    font-size: 30px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.SmartFit:hover {
+    color: #fff;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.navbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+/* ----------header.css---------- */
+
+.hero {
+    position: relative;
     height: 100vh;
-    color: #D2FFD2;
+    background-image: url('../images/main.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1;
 }
 
 .login-container {
-    background-color: #2A2D28;
+    position: relative;
+    z-index: 2;
     padding: 30px;
+    background-color: rgba(2555, 255, 255, 0.);
     border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    color: white;
     width: 90%;
     max-width: 400px;
-    text-align: center;
 }
 
 h1 {
     margin-bottom: 24px;
     font-size: 1.8em;
-    color: #D2FFD2;
+    color: #ffffff;
 }
 
 form {
@@ -35,27 +116,23 @@ form {
 label {
     text-align: left;
     font-weight: bold;
-    color: #D2FFD2;
+    color: #ffffff;
 }
 
 input {
     padding: 10px;
     border-radius: 8px;
     border: 1px solid #5A5D58;
-    background-color: #1C1F1B;
-    color: #D2FFD2;
+    background-color: #ffffff;
+    color: black;
     font-size: 1em;
     width: 100%;
     box-sizing: border-box;
 }
 
-input::placeholder {
-    color: #A9CCA9;
-}
-
 button {
     padding: 12px;
-    background-color: #4CAF50;
+    background-color: rgba(2555, 255, 255, 0.4);
     border: none;
     border-radius: 8px;
     color: white;
@@ -65,17 +142,19 @@ button {
 }
 
 button:hover {
-    background-color: #388E3C;
+    background-color: rgba(2555, 255, 255, 0.8);
+    color: #5A5D58;
+    border: none;
 }
 
-a {
+.register {
     display: block;
     margin-top: 20px;
     text-decoration: none;
-    color: #81C784;
+    color: #ffffff;
     font-size: 1em;
 }
 
-a:hover {
+.register:hover {
     text-decoration: underline;
 }
