@@ -51,11 +51,25 @@ async function detectFrame(video, net, ctx) {
         case 'plank':
             detectionResult = detectPlank(pose);
             break;
+        case 'pullup':
+    detectionResult = detectPullup(pose);
+    if (detectionResult.isCorrect && detectionResult.stage === 'up' && lastPullupStage === 'down') {
+        updateCounter();
     }
+    lastPullupStage = detectionResult.stage;
+    break;
+}
 
-    updateFeedback(currentExercise, detectionResult);
+updateFeedback(currentExercise, detectionResult);
 
-    requestAnimationFrame(() => detectFrame(video, net, ctx));
+requestAnimationFrame(() => detectFrame(video, net, ctx));
+}
+
+function updateCounter() {
+const repCountElement = document.getElementById('rep-count');
+let repCount = parseInt(repCountElement.textContent);
+repCount++;
+repCountElement.textContent = repCount;
 }
 
 init();

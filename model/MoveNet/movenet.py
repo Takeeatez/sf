@@ -1,112 +1,275 @@
 import cv2
-import tensorflow as tf
 import numpy as np
-import os
+import mediapipe as mp
+import math
+import json
+from datetime import datetime
+from PIL import Image, ImageDraw, ImageFont
 
-# 모델 파일 경로 설정
-MODEL_PATH = "/Users/02.011x/Documents/GitHub/sf/model/MoveNet/4.tflite"  # 실제 모델 파일 경로로 변경해야 합니다.
+class poseDetector():
+    def __init__(self, mode=False, upBody=False, smooth=True, detectionCon=0.5, trackCon=0.5):
+        self.mode = mode
+        self.upBody = upBody
+        self.smooth = smooth
+        self.detectionCon = detectionCon
+        self.trackCon = trackCon
+        self.mpDraw = mp.solutions.drawing_utils
+        self.mpPose = mp.solutions.pose
+        self.pose = self.mpPose.Pose(static_image_mode=self.mode, model_complexity=1,
+                                     smooth_landmarks=self.smooth,
+                                     min_detection_confidence=self.detectionCon,
+                                     min_tracking_confidence=self.trackCon)
 
-# 모델이 존재하는지 확인
-if not os.path.exists(MODEL_PATH):
-    print(f"오류: 모델 파일을 찾을 수 없습니다: {MODEL_PATH}")
-    print("다음 URL에서 모델을 다운로드하고 경로를 올바르게 설정해주세요:")
-    print("https://tfhub.dev/google/lite-model/movenet/singlepose/lightning/tflite/float16/4")
-    exit(1)
+    def findPose(self, img, draw=True):
+        imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        self.results = self.pose.process(imgRGB)
+        if self.results.pose_landmarks:
+            if draw:
+                self.mpDraw.draw_landmarks(img, self.results.pose_landmarks, self.mpPose.POSE_CONNECTIONS,
+                                           self.mpDraw.DrawingSpec(color=(255,0,0), thickness=2, circle_radius=2),
+                                           self.mpDraw.DrawingSpec(color=(255,0,0), thickness=2, circle_radius=2))
+        return img
 
-# 모델 로드
-interpreter = tf.lite.Interpreter(model_path=MODEL_PATH)
-interpreter.allocate_tensors()
+    def findPosition(self, img, draw=True):
+        self.lmList = []
+        if self.results.pose_landmarks:
+            for id, lm in enumerate(self.results.pose_landmarks.landmark):
+                h, w, c = img.shape
+                cx, cy = int(lm.x * w), int(lm.y * h)
+                self.lmList.append([id, cx, cy])
+                if draw:
+                    cv2.circle(img, (cx, cy), 5, (255, 0, 0), cv2.FILLED)
+        return self.lmList
 
-def detect_pose(image):
-    # 입력 세부 정보 가져오기
-    input_details = interpreter.get_input_details()
-    output_details = interpreter.get_output_details()
+    def findAngle(self, img, p1, p2, p3, draw=True):
+        x1, y1 = self.lmList[p1][1:]
+        x2, y2 = self.lmList[p2][1:]
+        x3, y3 = self.lmList[p3][1:]
+        
+        angle = math.degrees(math.atan2(y3-y2, x3-x2) - math.atan2(y1-y2, x1-x2))
+        if angle < 0:
+            angle += 360
+            
+        if draw:
+            cv2.line(img, (x1, y1), (x2, y2), (255, 255, 255), 3)
+            cv2.line(img, (x3, y3), (x2, y2), (255, 255, 255), 3)
+            cv2.circle(img, (x1, y1), 10, (0, 0, 255), cv2.FILLED)
+            cv2.circle(img, (x2, y2), 10, (0, 0, 255), cv2.FILLED)
+            cv2.circle(img, (x3, y3), 10, (0, 0, 255), cv2.FILLED)
+            cv2.putText(img, str(int(angle)), (x2 - 50, y2 + 50), 
+                        cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
+        return angle
 
-    # 입력 형태 및 타입 확인
-    input_shape = input_details[0]['shape']
-
-    # 이미지 전처리
-    input_image = cv2.resize(image, (input_shape[1], input_shape[2]))
-    input_image = cv2.cvtColor(input_image, cv2.COLOR_BGR2RGB)
-    input_image = np.expand_dims(input_image, axis=0)
-
-    # UINT8로 변환 (0-255 범위)
-    input_image = input_image.astype(np.uint8)
-
-    # 모델 입력
-    interpreter.set_tensor(input_details[0]['index'], input_image)
+def analyze_squat(detector, img):
+    # 엉덩이-무릎-발목 각도
+    hip_knee_ankle_angle = detector.findAngle(img, 24, 26, 28)
     
-    # 포즈 추정
-    interpreter.invoke()
-    keypoints = interpreter.get_tensor(output_details[0]['index'])
+    # 허리-엉덩이 각도
+    spine_hip_angle = detector.findAngle(img, 12, 24, 26)
+    
+    # 무릎과 발목의 x 좌표
+    knee_x = detector.lmList[26][1]
+    ankle_x = detector.lmList[28][1]
+    
+    feedback = []
+    
+    # 초기 자세 (서 있는 상태)가 아닐 때만 분석
+    if hip_knee_ankle_angle < 160:
+        # 엉덩이-무릎-발목 각도 분석
+        if hip_knee_ankle_angle > 90:
+            feedback.append("무릎을 더 굽히세요. 허벅지가 바닥과 평행이 되도록 하세요.")
+        
+        # 허리-엉덩이 각도 분석
+        if spine_hip_angle < 150:
+            feedback.append("허리를 펴세요. 등이 너무 둥글게 말립니다.")
+        elif spine_hip_angle > 180:
+            feedback.append("허리 과신전에 주의하세요. 척추를 중립 위치로 유지하세요.")
+        
+        # 무릎-발목 정렬 분석
+        if knee_x > ankle_x + 30:  # 30은 픽셀 단위의 허용 오차입니다. 필요에 따라 조정 가능합니다.
+            feedback.append("무릎이 발끝을 넘어갑니다. 무릎을 발과 일직선상에 유지하세요.")
+    
+    return hip_knee_ankle_angle, feedback
 
-    return keypoints[0]
+def analyze_pushup(detector, img):
+    # 팔꿈치 각도
+    elbow_angle = detector.findAngle(img, 12, 14, 16)
+    
+    # 어깨, 엉덩이, 발목의 y 좌표
+    shoulder_y = detector.lmList[12][2]
+    hip_y = detector.lmList[24][2]
+    ankle_y = detector.lmList[28][2]
+    
+    # 등의 수평 상태 확인 (어깨-엉덩이-발목 선)
+    body_angle = detector.findAngle(img, 12, 24, 28, draw=False)
+    
+    # 목 위치 확인 (귀-어깨-엉덩이 선)
+    neck_angle = detector.findAngle(img, 8, 12, 24, draw=False)
+    
+    feedback = []
+    
+    if elbow_angle < 160:  # 팔이 완전히 펴진 상태가 아닐 때
+        # 팔꿈치 각도 확인
+        if elbow_angle > 110:
+            feedback.append("팔을 더 굽히세요.")
+        elif elbow_angle < 70:
+            feedback.append("팔을 너무 많이 굽히지 마세요.")
+        
+        # 등의 수평 상태 확인
+        if abs(180 - body_angle) > 15:
+            if hip_y < min(shoulder_y, ankle_y):
+                feedback.append("엉덩이를 낮추세요. 등을 수평으로 유지하세요.")
+            elif hip_y > max(shoulder_y, ankle_y):
+                feedback.append("엉덩이를 올리세요. 등을 수평으로 유지하세요.")
+            else:
+                feedback.append("등을 수평으로 유지하세요.")
+        
+        # 목 위치 확인
+        if abs(neck_angle - body_angle) > 15:  # 15도는 허용 오차입니다. 필요에 따라 조정 가능합니다.
+            if neck_angle > body_angle:
+                feedback.append("고개를 너무 들지 마세요. 목을 척추와 일직선으로 유지하세요.")
+            else:
+                feedback.append("고개를 너무 숙이지 마세요. 목을 척추와 일직선으로 유지하세요.")
+    
+    return elbow_angle, feedback
 
-def draw_keypoints(image, keypoints):
-    y, x, c = image.shape
-    shaped = np.squeeze(np.multiply(keypoints, [y,x,1]))
+def analyze_pullup(detector, img):
+    # 어깨-엉덩이-발목 직선 확인
+    shoulder = detector.lmList[12]
+    hip = detector.lmList[24]
+    ankle = detector.lmList[28]
+    
+    # 어깨-엉덩이-발목 각도 계산
+    body_angle = detector.findAngle(img, 12, 24, 28, draw=False)
+    
+    # 턱과 손의 y 좌표
+    chin_y = detector.lmList[7][2]
+    right_hand_y = detector.lmList[16][2]
+    left_hand_y = detector.lmList[15][2]
+    hand_y = min(right_hand_y, left_hand_y)  # 더 높은 손 선택
+    
+    # 팔꿈치 각도 (운동 진행 상태 확인용)
+    elbow_angle = detector.findAngle(img, 12, 14, 16)
+    
+    feedback = []
+    
+    # 초기 자세 (팔이 완전히 펴진 상태)가 아닐 때만 분석
+    if elbow_angle < 160:
+        # 어깨-엉덩이-발목 직선 확인
+        if abs(180 - body_angle) > 15:  # 15도는 허용 오차, 필요에 따라 조정 가능
+            feedback.append("몸을 일직선으로 유지하세요. 엉덩이가 뒤로 빠지지 않도록 주의하세요.")
+        
+        # 턱-손 위치 확인
+        if chin_y > hand_y:
+            feedback.append("더 높이 당기세요. 턱이 손 높이까지 올라가야 합니다.")
+        
+        # 상체 흔들림 확인 (이전 프레임과의 x 좌표 차이로 판단)
+        if hasattr(detector, 'prev_shoulder_x'):
+            shoulder_movement = abs(shoulder[1] - detector.prev_shoulder_x)
+            if shoulder_movement > 20:  # 20픽셀은 허용 오차, 필요에 따라 조정 가능
+                feedback.append("상체를 안정적으로 유지하세요. 과도한 흔들림에 주의하세요.")
+        
+        # 현재 어깨 x 좌표 저장
+        detector.prev_shoulder_x = shoulder[1]
+    
+    return elbow_angle, feedback
 
-    for kp in shaped:
-        ky, kx, kp_conf = kp
-        if kp_conf > 0.2:
-            cv2.circle(image, (int(kx), int(ky)), 4, (0,255,0), -1) 
+def put_korean_text(img, text, position, font_size, color):
+    img_pil = Image.fromarray(img)
+    draw = ImageDraw.Draw(img_pil)
+    font = ImageFont.truetype("/System/Library/Fonts/AppleSDGothicNeo.ttc", font_size)
+    draw.text(position, text, font=font, fill=color)
+    return np.array(img_pil)
 
-    return image
-
-def analyze_squat(keypoints):
-    # MoveNet 모델의 키포인트 인덱스
-    LEFT_HIP = 11
-    LEFT_KNEE = 13
-    RIGHT_HIP = 12
-    RIGHT_KNEE = 14
-
-    # 키포인트 데이터 구조 확인
-    if keypoints.shape[0] == 17 and keypoints.shape[1] == 3:
-        left_hip = keypoints[LEFT_HIP]
-        left_knee = keypoints[LEFT_KNEE]
-        right_hip = keypoints[RIGHT_HIP]
-        right_knee = keypoints[RIGHT_KNEE]
-
-        # y 좌표는 두 번째 요소 (인덱스 1)
-        if left_hip[1] > left_knee[1] and right_hip[1] > right_knee[1]:
-            return "스쿼트 자세가 정확합니다."
-        else:
-            return "무릎을 더 구부리세요."
-    else:
-        return "포즈를 감지할 수 없습니다."
+def save_exercise_data(exercise_type, sets, reps, accuracy, duration):
+    date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    data = {
+        "date": date,
+        "exercise_type": exercise_type,
+        "sets": sets,
+        "reps": reps,
+        "accuracy": accuracy,
+        "duration": duration
+    }
+    filename = f"exercise_history_{date.replace(':', '-')}.json"
+    with open(filename, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
+    print(f"운동 기록이 {filename}에 저장되었습니다.")
 
 def main():
-    # 웹캠 열기
+    exercise_options = {"1": "스쿼트", "2": "푸시업", "3": "풀업"}
+    print("운동을 선택하세요:")
+    for key, value in exercise_options.items():
+        print(f"{key}. {value}")
+    choice = input("선택 (1/2/3): ")
+    exercise_type = exercise_options[choice]
+
+    target_sets = int(input("목표 세트 수를 입력하세요: "))
+    target_reps = int(input("세트당 반복 횟수를 입력하세요: "))
+
     cap = cv2.VideoCapture(0)
+    detector = poseDetector()
+    
+    count = 0
+    dir = 0
+    current_set = 1
+    total_accuracy = 0
+    total_count = 0
+    start_time = datetime.now()
 
-    if not cap.isOpened():
-        print("웹캠을 열 수 없습니다.")
-        return
+    while current_set <= target_sets:
+        success, img = cap.read()
+        img = cv2.flip(img, 1)  # 좌우 반전
+        img = detector.findPose(img)
+        lmList = detector.findPosition(img, draw=False)
+        
+        if len(lmList) != 0:
+            if exercise_type == "스쿼트":
+                angle, feedback = analyze_squat(detector, img)
+                per = np.interp(angle, (90, 160), (100, 0))
+            elif exercise_type == "푸시업":
+                angle, feedback = analyze_pushup(detector, img)
+                per = np.interp(angle, (70, 160), (100, 0))
+            elif exercise_type == "풀업":
+                angle, feedback = analyze_pullup(detector, img)
+                per = np.interp(angle, (160, 70), (0, 100))
 
-    while True:
-        ret, frame = cap.read()
-        if not ret:
-            print("프레임을 캡처할 수 없습니다.")
-            break
+            if per == 100:
+                if dir == 0:
+                    count += 0.5
+                    dir = 1
+            if per == 0:
+                if dir == 1:
+                    count += 0.5
+                    dir = 0
+            
+            total_accuracy += per
+            total_count += 1
 
-        # 포즈 추정
-        keypoints = detect_pose(frame)
+            color = (0, 255, 0) if not feedback else (0, 0, 255)
+            img = put_korean_text(img, f'운동: {exercise_type}', (10, 30), 30, color)
+            img = put_korean_text(img, f'세트: {current_set}/{target_sets}', (10, 70), 30, color)
+            img = put_korean_text(img, f'횟수: {int(count)}/{target_reps}', (10, 110), 30, color)
+            
+            for i, fb in enumerate(feedback):
+                img = put_korean_text(img, fb, (10, 150 + i*40), 30, (0, 0, 255))
 
-        # 키포인트 그리기
-        frame = draw_keypoints(frame, keypoints)
+            if int(count) == target_reps:
+                current_set += 1
+                count = 0
 
-        # 스쿼트 자세 분석
-        feedback = analyze_squat(keypoints)
-        cv2.putText(frame, feedback, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-
-        # 결과 표시
-        cv2.imshow('Pose Estimation', frame)
-
+        cv2.imshow("Exercise Progress", img)
+        
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
     cap.release()
     cv2.destroyAllWindows()
+
+    end_time = datetime.now()
+    duration = (end_time - start_time).total_seconds()
+    avg_accuracy = (total_accuracy / total_count) if total_count > 0 else 0
+    save_exercise_data(exercise_type, target_sets, target_reps, avg_accuracy, duration)
 
 if __name__ == "__main__":
     main()

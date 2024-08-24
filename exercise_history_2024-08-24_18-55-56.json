@@ -1,0 +1,17 @@
+{
+    "squat": {
+        "sets": [
+            5,
+            5
+        ],
+        "total_reps": 10
+    },
+    "pushup": {
+        "sets": [],
+        "total_reps": 0
+    },
+    "pullup": {
+        "sets": [],
+        "total_reps": 0
+    }
+}
