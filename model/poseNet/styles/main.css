@@ -1,0 +1,51 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+}
+
+#app {
+    text-align: center;
+}
+
+#video-container {
+    position: relative;
+    width: 640px;
+    height: 480px;
+    margin-bottom: 20px;
+}
+
+#video, #output {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#exercise-selector {
+    margin-bottom: 20px;
+}
+
+button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+#feedback {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #d9534f;
+}
+
+#rep-counter {
+    margin-top: 10px;
+    font-size: 24px;
+    font-weight: bold;
+}

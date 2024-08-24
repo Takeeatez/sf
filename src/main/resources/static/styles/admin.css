@@ -1,0 +1,110 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1C1F1B;
+    color: #D2FFD2;
+    margin: 0;
+    padding-top: 70px;
+    height: 100%;
+    min-height: 100vh;
+}
+
+.navbar-dark .navbar-nav .nav-link.active {
+    color: #81C784;
+    font-weight: bold;
+}
+
+.container-fluid {
+    background-color: #2A2D28;
+    padding: 1rem;
+    border-radius: 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+}
+
+.list-group-item {
+    background-color: #2A2D28;
+    color: #D2FFD2;
+    border: none;
+}
+
+.list-group-item-action:hover {
+    background-color: #81C784;
+    color: #1C1F1B;
+}
+
+.list-group-item.active {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+
+.card {
+    background-color: #2A2D28;
+    color: #D2FFD2;
+    border: none;
+    margin-bottom: 20px;
+    border-radius: 6px;
+}
+
+.card-header {
+    background-color: #388E3C;
+    color: #D2FFD2;
+    border-bottom: none;
+    font-weight: bold;
+    border-radius: 6px 6px 0 0;
+}
+
+.card-body {
+    background-color: #2A2D28;
+    color: #D2FFD2;
+    border-radius: 0 0 6px 6px; /* 바디의 둥근 모서리 최소화 */
+}
+
+.table {
+    background-color: #2A2D28;
+    color: #D2FFD2;
+    border: none;
+    margin-top: 20px;
+}
+
+.table th {
+    background-color: #388E3C;
+    color: #D2FFD2;
+    border: none;
+}
+
+.table td {
+    background-color: #2A2D28;
+    color: #D2FFD2;
+    border-top: 1px solid #5A5D58;
+}
+
+.btn-primary {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+
+.btn-primary:hover {
+    background-color: #388E3C;
+    border-color: #388E3C;
+}
+
+.btn-warning {
+    background-color: #FFC107;
+    border-color: #FFC107;
+    color: #1C1F1B;
+}
+
+.btn-warning:hover {
+    background-color: #FFA000;
+    border-color: #FFA000;
+    color: #1C1F1B;
+}
+
+.btn-danger {
+    background-color: #F44336;
+    border-color: #F44336;
+}
+
+.btn-danger:hover {
+    background-color: #D32F2F;
+    border-color: #D32F2F;
+}

@@ -1,0 +1,24 @@
+{
+    "2024-08-21": [
+        {
+            "time": "12:46:30",
+            "exercise_type": "아령 들기",
+            "sets": 3,
+            "target_sets": 3,
+            "target_reps": 3,
+            "avg_accuracy": 76.95,
+            "right_arm_reps": 3,
+            "left_arm_reps": 2
+        },
+        {
+            "time": "12:46:30",
+            "exercise_type": "아령 들기",
+            "sets": 3,
+            "target_sets": 3,
+            "target_reps": 3,
+            "avg_accuracy": 76.95,
+            "right_arm_reps": 3,
+            "left_arm_reps": 2
+        }
+    ]
+}

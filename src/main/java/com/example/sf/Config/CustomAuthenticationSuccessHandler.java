@@ -26,10 +26,10 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             }
         }
 
-        // 세션에 사용자 권한 정보를 저장합니다.
+        // 세션에 사용자 권한 정보를 저장
         session.setAttribute("userRole", isAdmin ? "ADMIN" : "USER");
 
-        // 권한에 따라 페이지를 리다이렉트합니다.
+        // 권한에 따라 페이지를 리다이렉트
         if (isAdmin) {
             response.sendRedirect("/admin");
         } else {

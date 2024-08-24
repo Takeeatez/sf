@@ -1,0 +1,44 @@
+{
+    "2024-08-23": [
+        {
+            "time": "02:02:14",
+            "exercise_type": "아령 들기",
+            "sets": 1,
+            "target_sets": 1,
+            "target_reps": 1,
+            "avg_accuracy": 83.42,
+            "right_arm_reps": 0,
+            "left_arm_reps": 1
+        },
+        {
+            "time": "02:02:14",
+            "exercise_type": "아령 들기",
+            "sets": 1,
+            "target_sets": 1,
+            "target_reps": 1,
+            "avg_accuracy": 83.42,
+            "right_arm_reps": 0,
+            "left_arm_reps": 1
+        },
+        {
+            "time": "02:03:24",
+            "exercise_type": "아령 들기",
+            "sets": 1,
+            "target_sets": 1,
+            "target_reps": 5,
+            "avg_accuracy": 49.62,
+            "right_arm_reps": 4,
+            "left_arm_reps": 5
+        },
+        {
+            "time": "02:03:24",
+            "exercise_type": "아령 들기",
+            "sets": 1,
+            "target_sets": 1,
+            "target_reps": 5,
+            "avg_accuracy": 49.62,
+            "right_arm_reps": 4,
+            "left_arm_reps": 5
+        }
+    ]
+}

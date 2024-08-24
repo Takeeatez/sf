@@ -94,6 +94,7 @@ public class UserService {
                 .userName(userEntity.getUserName())
                 .email(userEntity.getEmail())
                 .phone(userEntity.getPhone())
+                .role(userEntity.getRole().name())
                 .build();
     }
 }

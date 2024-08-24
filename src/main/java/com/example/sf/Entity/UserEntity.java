@@ -3,6 +3,8 @@ package com.example.sf.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
@@ -21,7 +23,7 @@ public class UserEntity {
     @Column(length = 12, unique = true, nullable = false)
     private String userId; // 사용자 아이디
 
-    @Column(length = 4, nullable = false)
+    @Column(length = 5, nullable = false, unique=true)
     private String userName;
 
     @Column(nullable = false)
@@ -32,6 +34,15 @@ public class UserEntity {
 
     @Column(nullable = false)
     private String phone; // 전화번호
+
+    @Column(nullable = true, updatable = false)
+    private LocalDateTime createdAt; // 가입 날짜
+
+    @Column(nullable = true)
+    private LocalDateTime lastLoginAt; // 마지막 로그인 시간
+
+    @Column(nullable = true)
+    private String profileImage; // 프로필 이미지 경로
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -51,6 +62,17 @@ public class UserEntity {
             this.key = key;
             this.value = value;
         }
+    }
+
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.lastLoginAt = LocalDateTime.now();
     }
 
 }

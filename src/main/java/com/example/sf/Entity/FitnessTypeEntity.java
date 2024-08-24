@@ -21,10 +21,6 @@ public class FitnessTypeEntity {
     @Column(length = 20)
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "id", nullable = false)
-    private AdminEntity admin;
-
     @OneToMany(mappedBy = "fitnessType", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FitnessEntity> fitnessList;
 }
