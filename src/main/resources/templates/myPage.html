@@ -2,73 +2,13 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Page</title>
-    <link href="/styles/myPage.css" rel="stylesheet">
 </head>
 <body>
-<div class="container mypage">
-    <div class="mypage__left">
-        <div class="mypage__left__header">
-            <h2>사용자님, n번 연속으로 접속하셨네요!</h2>
-        </div>
-        <div class="mypage__left__body">
-            <div class="mypage__left__body__profile">
-                <div class="mypage__left__body__profile__picture" onclick="document.getElementById('fileInput').click()">
-                    <img id="profileImage" src="/path/to/default-image.jpg" alt="Profile">
-                    <input id="fileInput" type="file" style="display: none;" accept="image/*" onchange="uploadImage(event)">
-                </div>
-                <div class="mypage__left__body__profile__user">
-                    <p>사용자 이름</p>
-                </div>
-            </div>
-            <div class="mypage__left__body__graph">
-                graph
-            </div>
-        </div>
-    </div>
-    <div class="mypage__right">
-        <div class="mypage__right__header">
-            <h3>최근 운동 기록</h3>
-        </div>
-        <div class="mypage__right__list">
-            <div class="mypage__right__list__left">
-                <p>xxxx.xx.xx</p>
-                <p>종류 : 스쿼트</p>
-                <p>점수 : 100점</p>
-            </div>
-            <div class="mypage__right__list__right">
-                <p>피드백 : 좋음</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    function uploadImage(event) {
-        const file = event.target.files[0];
-        if (file) {
-            const formData = new FormData();
-            formData.append("profileImage", file);
-
-            fetch("/user/profile/upload", {
-                method: "POST",
-                body: formData
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        document.getElementById('profileImage').src = URL.createObjectURL(file);
-                    } else {
-                        alert("이미지 업로드에 실패했습니다.");
-                    }
-                })
-                .catch(error => {
-                    console.error("Error uploading image:", error);
-                    alert("이미지 업로드 중 오류가 발생했습니다.");
-                });
-        }
-    }
-</script>
+<h1>My Page</h1>
+<p>this is test code</p>
+<p>User Name: <span th:text="${userName}">User Name</span></p>
+<p>가입 날짜: <span th:text="${createdAt}">가입 날짜</span></p>
 </body>
 </html>

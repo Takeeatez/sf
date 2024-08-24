@@ -2,6 +2,8 @@ package com.example.sf.DTO;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 @ToString
@@ -16,6 +18,6 @@ public class UserDTO {
     private String phone;
     private String profileImage;
     private String role;
-    // 필요에 따라 비밀번호를 포함할 수도 있지만 보통 보안을 위해 제외
+    private LocalDateTime createdAt;  // 가입 날짜
 
 }

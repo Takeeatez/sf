@@ -37,12 +37,14 @@ public class AdminController {
         return "admin";
     }
 
+    // 운동 추가
     @PostMapping("/admin/addExercise")
     public String addExercise(@ModelAttribute FitnessTypeEntity exercise) {
         fitnessTypeService.saveExercise(exercise);
         return "redirect:/admin"; // 추가 후 관리자 대시보드로 리다이렉트
     }
 
+    // 운동 업데이트
     @PostMapping("/updateExercise")
     @ResponseBody
     public ResponseEntity<?> updateExercise(@RequestBody FitnessTypeEntity exercise) {
@@ -54,6 +56,7 @@ public class AdminController {
         }
     }
 
+    // 운동 삭제
     @DeleteMapping("/deleteExercise/{fitId}")
     @ResponseBody
     public ResponseEntity<?> deleteExercise(@PathVariable int fitId) {

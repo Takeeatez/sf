@@ -55,6 +55,15 @@ public class UserService {
         return convertToDTO(userEntity);
     }
 
+
+    // 이름으로 사용자 조회
+    public UserDTO getUserByUserName(String userName) {
+        return userRepository.findByUserName(userName)
+                .map(this::convertToDTO)
+                .orElseThrow(() -> new RuntimeException("User not found with username: " + userName));
+    }
+
+
     // 사용자 목록 조회
     public List<UserDTO> getAllUsers() {
         return userRepository.findAll().stream()
@@ -95,6 +104,7 @@ public class UserService {
                 .email(userEntity.getEmail())
                 .phone(userEntity.getPhone())
                 .role(userEntity.getRole().name())
+                .createdAt(userEntity.getCreatedAt())
                 .build();
     }
 }
