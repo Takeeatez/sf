@@ -1,5 +1,4 @@
-'''
-0. 코 (Nose)
+'''0. 코 (Nose)
 1. 왼쪽 눈 안쪽 (Left eye inner)
 2. 왼쪽 눈 (Left eye)
 3. 왼쪽 눈 바깥쪽 (Left eye outer)
@@ -97,41 +96,61 @@ class poseDetector():
         return angle
 
 def analyze_squat(detector, img):
-    # 엉덩이-무릎-발목 각도
+    # 관절 좌표 추출
+    right_shoulder = detector.lmList[12]
+    right_hip = detector.lmList[24]
+    right_knee = detector.lmList[26]
+    right_ankle = detector.lmList[28]
+
+    # 엉덩이-무릎-발목 각도 계산
     hip_knee_ankle_angle = detector.findAngle(img, 24, 26, 28)
     
-    # 허리-엉덩이 각도
-    spine_hip_angle = detector.findAngle(img, 12, 24, 26)
-    
-    # 무릎과 발목의 x 좌표
-    knee_x = detector.lmList[26][1]
-    ankle_x = detector.lmList[28][1]
-    
+    # 어깨와 엉덩이의 x, y 좌표
+    shoulder_x, shoulder_y = right_shoulder[1:]
+    hip_x, hip_y = right_hip[1:]
+    knee_x = right_knee[1]
+    ankle_x = right_ankle[1]
+
     feedback = []
     
     # 초기 자세 (서 있는 상태)가 아닐 때만 분석
     if hip_knee_ankle_angle < 160:
-        # 엉덩이-무릎-발목 각도 분석
-        if hip_knee_ankle_angle > 90:
+        # 1. 엉덩이-무릎-발목 각도 분석
+        if hip_knee_ankle_angle > 90:  # 90도에서 여유를 둠
             feedback.append("무릎을 더 굽히세요. 허벅지가 바닥과 평행이 되도록 하세요.")
-        
-        # 허리-엉덩이 각도 분석
-        if spine_hip_angle < 150:
-            feedback.append("허리를 펴세요. 등이 너무 둥글게 말립니다.")
-        elif spine_hip_angle > 180:
-            feedback.append("허리 과신전에 주의하세요. 척추를 중립 위치로 유지하세요.")
-        
-        # 무릎-발목 정렬 분석
-        if knee_x > ankle_x + 30:  # 30은 픽셀 단위의 허용 오차입니다. 필요에 따라 조정 가능합니다.
+        elif hip_knee_ankle_angle < 70:  # 너무 깊게 앉는 것을 방지
+            feedback.append("너무 깊게 앉지 마세요. 무릎에 무리가 갈 수 있습니다.")
+
+        # 2. 어깨의 수직 이동 확인
+        shoulder_hip_x_diff = shoulder_x - hip_x
+        tolerance = 30  # 허용 오차 (픽셀 단위)
+
+        if abs(shoulder_hip_x_diff) > tolerance:
+            if shoulder_hip_x_diff < 0:
+                feedback.append("상체가 앞으로 기울어집니다. 어깨를 뒤로 젖혀 수직을 유지하세요.")
+            else:
+                feedback.append("상체가 뒤로 기울어집니다. 어깨를 앞으로 당겨 수직을 유지하세요.")
+
+        # 3. 무릎-발목 정렬 분석
+        knee_ankle_x_diff = knee_x - ankle_x
+        if knee_ankle_x_diff > 30:  # 30은 픽셀 단위의 허용 오차
             feedback.append("무릎이 발끝을 넘어갑니다. 무릎을 발과 일직선상에 유지하세요.")
-    
-    return hip_knee_ankle_angle, feedback
+        
+        # 4. 무게 중심 확인 (발뒤꿈치 들림 방지)
+        heel = detector.lmList[30]  # 오른쪽 발뒤꿈치
+        if heel[2] < ankle_x - 10:  # y좌표가 더 작으면 (화면상 더 위에 있으면) 발뒤꿈치가 들린 것
+            feedback.append("발뒤꿈치가 들리지 않도록 주의하세요. 무게 중심을 뒤쪽으로 유지하세요.")
+
+    # 운동 진행도 계산 (0%: 선 자세, 100%: 완전히 앉은 자세)
+    progress = np.interp(hip_knee_ankle_angle, (70, 160), (100, 0))
+
+    return hip_knee_ankle_angle, progress, feedback
 
 def analyze_pushup(detector, img):
-    # 팔꿈치 각도
+    # 오른쪽 팔꿈치 각도
     elbow_angle = detector.findAngle(img, 12, 14, 16)
     
-    # 어깨, 엉덩이, 발목의 y 좌표
+    # 오른쪽 어깨, 엉덩이, 발목의 y 좌표
     shoulder_y = detector.lmList[12][2]
     hip_y = detector.lmList[24][2]
     ankle_y = detector.lmList[28][2]
@@ -161,7 +180,7 @@ def analyze_pushup(detector, img):
                 feedback.append("등을 수평으로 유지하세요.")
         
         # 목 위치 확인
-        if abs(neck_angle - body_angle) > 15:  # 15도는 허용 오차입니다. 필요에 따라 조정 가능합니다.
+        if abs(neck_angle - body_angle) > 15:
             if neck_angle > body_angle:
                 feedback.append("고개를 너무 들지 마세요. 목을 척추와 일직선으로 유지하세요.")
             else:
@@ -170,21 +189,19 @@ def analyze_pushup(detector, img):
     return elbow_angle, feedback
 
 def analyze_pullup(detector, img):
-    # 어깨-엉덩이-발목 직선 확인
+    # 오른쪽 어깨-엉덩이-발목 직선 확인
     shoulder = detector.lmList[12]
     hip = detector.lmList[24]
     ankle = detector.lmList[28]
     
-    # 어깨-엉덩이-발목 각도 계산
+    # 오른쪽 어깨-엉덩이-발목 각도 계산
     body_angle = detector.findAngle(img, 12, 24, 28, draw=False)
     
-    # 턱과 손의 y 좌표
+    # 턱과 오른쪽 손의 y 좌표
     chin_y = detector.lmList[7][2]
-    right_hand_y = detector.lmList[16][2]
-    left_hand_y = detector.lmList[15][2]
-    hand_y = min(right_hand_y, left_hand_y)  # 더 높은 손 선택
+    hand_y = detector.lmList[16][2]
     
-    # 팔꿈치 각도 (운동 진행 상태 확인용)
+    # 오른쪽 팔꿈치 각도 (운동 진행 상태 확인용)
     elbow_angle = detector.findAngle(img, 12, 14, 16)
     
     feedback = []
@@ -192,7 +209,7 @@ def analyze_pullup(detector, img):
     # 초기 자세 (팔이 완전히 펴진 상태)가 아닐 때만 분석
     if elbow_angle < 160:
         # 어깨-엉덩이-발목 직선 확인
-        if abs(180 - body_angle) > 15:  # 15도는 허용 오차, 필요에 따라 조정 가능
+        if abs(180 - body_angle) > 15:
             feedback.append("몸을 일직선으로 유지하세요. 엉덩이가 뒤로 빠지지 않도록 주의하세요.")
         
         # 턱-손 위치 확인
@@ -202,7 +219,7 @@ def analyze_pullup(detector, img):
         # 상체 흔들림 확인 (이전 프레임과의 x 좌표 차이로 판단)
         if hasattr(detector, 'prev_shoulder_x'):
             shoulder_movement = abs(shoulder[1] - detector.prev_shoulder_x)
-            if shoulder_movement > 20:  # 20픽셀은 허용 오차, 필요에 따라 조정 가능
+            if shoulder_movement > 20:
                 feedback.append("상체를 안정적으로 유지하세요. 과도한 흔들림에 주의하세요.")
         
         # 현재 어깨 x 좌표 저장
