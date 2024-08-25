@@ -1,8 +1,8 @@
 package com.example.sf.Service;
 
-import com.example.sf.Entity.FitnessEntity;
+import com.example.sf.Entity.FitnessTypeEntity;
 import com.example.sf.Entity.UserEntity;
-import com.example.sf.Repository.FitnessRepository;
+import com.example.sf.Repository.FitnessTypeRepository;
 import com.example.sf.Repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 public class AdminService {
 
     private final UserRepository userRepository;
-    private final FitnessRepository fitnessRepository;
+    private final FitnessTypeRepository fitnessTypeRepository;
 
-    public AdminService(UserRepository userRepository, FitnessRepository fitnessRepository) {
+    public AdminService(UserRepository userRepository, FitnessTypeRepository fitnessTypeRepository) {
         this.userRepository = userRepository;
-        this.fitnessRepository = fitnessRepository;
+        this.fitnessTypeRepository = fitnessTypeRepository;
     }
 
     public void createUser(UserEntity user) {
@@ -25,10 +25,8 @@ public class AdminService {
         userRepository.deleteById(userId);
     }
 
-    public void updateFitness(FitnessEntity fitness) {
-        fitnessRepository.save(fitness);
+    public void updateFitness(FitnessTypeEntity fitness) {
+        fitnessTypeRepository.save(fitness);
     }
 
-
-    // 기타 관리자 전용 기능들 추가
 }

@@ -19,8 +19,8 @@ public class UserChoiceEntity {
     private UserEntity user;
 
     @ManyToOne
-    @JoinColumn(name = "fitnum", nullable = false)
-    private FitnessEntity fitness;
+    @JoinColumn(name = "fitId", nullable = false)
+    private FitnessTypeEntity fitnessType;
 
     @Column(length = 255)
     private String time;

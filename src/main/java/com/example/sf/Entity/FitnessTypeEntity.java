@@ -22,5 +22,6 @@ public class FitnessTypeEntity {
     private String description;
 
     @OneToMany(mappedBy = "fitnessType", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<FitnessEntity> fitnessList;
+    private List<UserChoiceEntity> userChoices;
+
 }

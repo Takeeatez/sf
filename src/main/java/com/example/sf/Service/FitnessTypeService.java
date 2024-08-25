@@ -53,4 +53,10 @@ public class FitnessTypeService {
     public FitnessTypeEntity getExerciseById(int fitId) {
         return fitnessTypeRepository.findById(fitId).orElse(null);
     }
+
+    // 운동 이름으로 찾기
+    public FitnessTypeEntity getExerciseByName(String name) {
+        return fitnessTypeRepository.findByName(name).orElse(null);
+    }
+
 }
