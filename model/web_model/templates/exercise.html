@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartFit - 운동 진행</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>운동 진행 중</h1>
+    <div id="video-container">
+        <img src="{{ url_for('video_feed') }}" alt="Exercise Video Feed">
+    </div>
+    <div id="exercise-info"></div>
+    <button id="stop-exercise">운동 종료</button>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
