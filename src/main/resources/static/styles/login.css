@@ -2,7 +2,7 @@ body,
 html {
     margin: 0;
     padding: 0;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Noto Sans KR', sans-serif;
     height: 100%;
     width: 100%;
     overflow: hidden;
@@ -92,7 +92,7 @@ header nav ul li a:hover {
     position: relative;
     z-index: 2;
     padding: 30px;
-    background-color: rgba(2555, 255, 255, 0.);
+    background-color: rgba(2555, 255, 255, 0);
     border-radius: 12px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     text-align: center;

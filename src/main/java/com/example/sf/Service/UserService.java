@@ -5,9 +5,14 @@ import com.example.sf.Entity.UserEntity;
 import com.example.sf.Repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,6 +23,33 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
+
+    // 현재 로그인된 사용자의 userName 가져오기
+    public String getLoggedInUserName() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new RuntimeException("User is not authenticated");
+        }
+
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof UserDetails) {
+            return ((UserDetails) principal).getUsername();
+        } else {
+            return principal.toString();
+        }
+    }
+
+    public UserDTO getLoggedInUserDetails() {
+        String username = getLoggedInUserName(); // 현재 로그인한 사용자의 username을 가져옴
+        System.out.println("Logged in username: " + username); // 로그 추가
+
+        UserEntity userEntity = userRepository.findByUserName(username)
+                .orElseThrow(() -> new RuntimeException("User not found with username: " + username));
+
+        return convertToDTO(userEntity);
+    }
 
     // 사용자 생성 (회원가입)
     public UserDTO createUser(UserDTO userDTO) {
@@ -55,14 +87,22 @@ public class UserService {
         return convertToDTO(userEntity);
     }
 
-
-    // 이름으로 사용자 조회
-    public UserDTO getUserByUserName(String userName) {
-        return userRepository.findByUserName(userName)
-                .map(this::convertToDTO)
-                .orElseThrow(() -> new RuntimeException("User not found with username: " + userName));
+    // 로그인된 사용자 userName받아옴
+    public String getUserName(Principal principal){
+        return principal.getName();
     }
 
+    public UserDTO getUserInfo(String userName) {
+        UserEntity userEntity = userRepository.findUserEntityByUserId(userName);
+
+        // ModelMapper를 사용해 UserEntity를 UserDTO로 변환
+        return modelMapper.map(userEntity, UserDTO.class);
+    }
+
+    // 사용자 이름으로 조회
+    public String getUserByUserName(String userName) {
+        return userRepository.findUserNameByUserId(userName);
+    }
 
     // 사용자 목록 조회
     public List<UserDTO> getAllUsers() {
@@ -104,7 +144,7 @@ public class UserService {
                 .email(userEntity.getEmail())
                 .phone(userEntity.getPhone())
                 .role(userEntity.getRole().name())
-                .createdAt(userEntity.getCreatedAt())
+                .joinDate(userEntity.getJoinDate())
                 .build();
     }
 }

@@ -45,26 +45,16 @@ public class AdminController {
     }
 
     // 운동 업데이트
-    @PostMapping("/updateExercise")
-    @ResponseBody
-    public ResponseEntity<?> updateExercise(@RequestBody FitnessTypeEntity exercise) {
+    @PostMapping("/admin/updateExercise/{fitId}")
+    public String updateExercise(@ModelAttribute FitnessTypeEntity exercise, @PathVariable("fitId") int fitId) {
         FitnessTypeEntity updatedExercise = fitnessTypeService.updateExercise(exercise);
-        if (updatedExercise != null) {
-            return ResponseEntity.ok().body("{\"success\": true}");
-        } else {
-            return ResponseEntity.status(400).body("{\"success\": false}");
-        }
+        return "redirect:/admin";
     }
 
     // 운동 삭제
-    @DeleteMapping("/deleteExercise/{fitId}")
-    @ResponseBody
-    public ResponseEntity<?> deleteExercise(@PathVariable int fitId) {
-        boolean success = fitnessTypeService.deleteExercise(fitId);
-        if (success) {
-            return ResponseEntity.ok().body("{\"success\": true}");
-        } else {
-            return ResponseEntity.status(400).body("{\"success\": false}");
-        }
+    @PostMapping("/admin/deleteExercise/{fitId}")
+    public String deleteExercise(@PathVariable int fitId) {
+        fitnessTypeService.deleteExercise(fitId);
+        return "redirect:/admin";
     }
 }

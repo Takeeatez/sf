@@ -36,7 +36,7 @@ public class UserEntity {
     private String phone; // 전화번호
 
     @Column(nullable = true, updatable = false)
-    private LocalDateTime createdAt; // 가입 날짜
+    private LocalDateTime joinDate; // 가입 날짜
 
     @Column(nullable = true)
     private LocalDateTime lastLoginAt; // 마지막 로그인 시간
@@ -67,7 +67,7 @@ public class UserEntity {
 
     @PrePersist
     protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
+        this.joinDate = LocalDateTime.now();
     }
 
     @PreUpdate

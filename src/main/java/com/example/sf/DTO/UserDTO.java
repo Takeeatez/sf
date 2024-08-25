@@ -1,6 +1,7 @@
 package com.example.sf.DTO;
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -18,6 +19,8 @@ public class UserDTO {
     private String phone;
     private String profileImage;
     private String role;
-    private LocalDateTime createdAt;  // 가입 날짜
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDateTime joinDate;  // 가입 날짜
 
 }

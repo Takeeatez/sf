@@ -22,7 +22,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/login", "/register", "/resources/**", "/main", "/styles/**", "/scripts/**", "/images/**")
+                        .requestMatchers("/login", "/register", "/resources/**", "/main", "/styles/**", "/scripts/**", "/images/**", "/test")
                         .permitAll() // 로그인 안 해도 접근 가능한 페이지
                         .anyRequest().authenticated()) // 그 외의 요청은 인증 필요
                 .formLogin((form) -> form

@@ -1,43 +1,53 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trevor Carter Fan Site</title>
+    <title>Smart Fit</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles/main.css">
 </head>
 
 <body>
-    <header>
-        <nav>
-            <ul>
-                <div>
-                    <li><a th:href="@{/main}" class="SmartFit">SmartFit</a></li>
-                </div>
-                <div class="navbar">
-                    <li><a th:href="@{/login}">Login</a></li>
-                    <!-- <li><a th:href="@{/logout}">Logout</a></li> -->
-                    <li><a th:href="@{/aboutUs}">About Us</a></li>
-                </div>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <div class="hero">
-            <div class="overlay"></div>
-            <div class="red-rectangle"></div>
-            <div class="content">
-                <h1>SMART FIT</h1>
-                <p>welcome to join us!<br />스마트핏과 함께 건강해져 보세요!</p>
-                <div class="buttons">
-                    <a th:href="@{/setting}" class="btn">체험하기</a>
-                    <a th:href="@{/setting}" class="btn">운동하기</a>
-                    <a th:href="@{/myPage}" class="btn">마이페이지</a>
-                </div>
+<header>
+    <nav>
+        <ul>
+            <div>
+                <li><a th:href="@{/main}" class="SmartFit">SmartFit</a></li>
+            </div>
+            <div class="navbar">
+            <li>
+                <a sec:authorize="isAnonymous()" th:href="@{/login}">Login</a>
+                <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout</a>
+            </li>
+            <!-- <li><a th:href="@{/logout}">Logout</a></li> -->
+            <li>
+                <a th:href="@{/aboutUs}">About Us</a>
+            </li>
+        </div>
+        </ul>
+    </nav>
+</header>
+<main>
+    <div class="hero">
+        <div class="overlay"></div>
+        <div class="red-rectangle"></div>
+        <div class="content">
+            <h1>SMART FIT</h1>
+            <!--<p sec:authorize="isAuthenticated()" class="d-none d-md-block dropdown-toggle ps-2" sec:authentication="name"></p>-->
+            <p sec:authorize="isAnonymous()" class="d-none d-md-block dropdown-toggle ps-2">로그인 필요</p>
+            <p th:text="${userName}+'님 안녕하세요! 스마트핏과 함께 건강해져보세요!'" />
+            <div class="buttons">
+                <a th:href="@{/setting}" class="btn">운동하기</a>
+                <a th:href="@{/myPage}" class="btn">마이페이지</a>
             </div>
         </div>
-    </main>
+    </div>
+</main>
 </body>
 
 </html>

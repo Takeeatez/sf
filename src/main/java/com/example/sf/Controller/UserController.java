@@ -6,13 +6,17 @@ import com.example.sf.Service.FitnessTypeService;
 import com.example.sf.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -21,9 +25,16 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    @Autowired
     private FitnessTypeService fitnessTypeService;
 
-    @GetMapping({ "/", "/login" })
+
+    @GetMapping({"/", "/test"})
+    public String test(){
+        return "test";
+    }
+
+    @GetMapping("/login")
     public String login(Model model) {
         return "login";
     }
@@ -42,16 +53,19 @@ public class UserController {
 
 
     @GetMapping("/myPage")
-    public String showMyPage(Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserName = authentication.getName();
+    public String showMyPage(Principal principal, Model model) {
+        // Principal로부터 사용자 이름 가져오기
+        String userName = principal.getName();
 
-        UserDTO userDTO = userService.getUserByUserName(currentUserName);
-        // 이름 받아옴
-        model.addAttribute("userName", userDTO.getUserName());
-        // 가입날짜 받아옴
-        model.addAttribute("createdAt", userDTO.getCreatedAt());
+        // 사용자 이름으로 사용자 정보를 가져옴
+        String userName1 = userService.getUserByUserName(userName);
+        UserDTO userDTO = userService.getUserInfo(userName);
 
+        // 모델에 사용자 정보 추가
+        model.addAttribute("userName", userName1);
+        model.addAttribute("joinDate", userDTO.getJoinDate());
+
+        // 마이페이지로 이동
         return "myPage";
     }
 
@@ -71,7 +85,14 @@ public class UserController {
     }
 
     @GetMapping("/main")
-    public String main() {
+    public String main(Principal principal, Model model) {
+        // Principal로부터 사용자 이름 가져오기
+        String userName = principal.getName();
+
+        // 사용자 이름으로 사용자 정보를 가져옴
+        String userName1 = userService.getUserByUserName(userName);
+        model.addAttribute("userName", userName1);
+
         return "main";
     }
 }

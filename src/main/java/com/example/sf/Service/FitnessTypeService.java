@@ -18,10 +18,12 @@ public class FitnessTypeService {
         this.fitnessTypeRepository = fitnessTypeRepository;
     }
 
+    // 운동 저장
     public FitnessTypeEntity saveExercise(FitnessTypeEntity fitnessTypeEntity) {
         return fitnessTypeRepository.save(fitnessTypeEntity);
     }
 
+    // 운동 업데이트
     public FitnessTypeEntity updateExercise(FitnessTypeEntity fitnessTypeEntity) {
         Optional<FitnessTypeEntity> existingEntity = fitnessTypeRepository.findById(fitnessTypeEntity.getFitId());
         if (existingEntity.isPresent()) {
@@ -33,6 +35,7 @@ public class FitnessTypeService {
         return null;
     }
 
+    // 운동 삭제
     public boolean deleteExercise(int fitId) {
         Optional<FitnessTypeEntity> existingEntity = fitnessTypeRepository.findById(fitId);
         if (existingEntity.isPresent()) {
@@ -42,6 +45,7 @@ public class FitnessTypeService {
         return false;
     }
 
+    // 전체 운동 리스트 불러옴
     public List<FitnessTypeEntity> getAllFitnessTypes() {
         return fitnessTypeRepository.findAll();
     }

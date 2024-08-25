@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Page</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/styles/myPage.css}">
 </head>
 
@@ -35,12 +38,10 @@
                         <input id="fileInput" type="file" style="display: none;" accept="image/*"
                             onchange="uploadImage(event)">
                     </div>
-                    <p>이름 : 홍길동</p>
-                    <!-- <p th:text="'이름 : ' + ${user.userName}" /> -->
-                    <p>가입일 : 2023-01-15</p>
-                    <!-- <p th:text="'가입일 : ' + ${user.joinDate}" /> -->
+                    <p th:text="'이름 : ' + ${userName}" />
+                    <p th:text="'가입일 : '+${#temporals.format(joinDate,'yyyy-MM-dd')}" class="text-right"></p>
                     <p>현재 연속 출석일 : 10일</p>
-                    <!-- <p th:text="'현재 연속 출석일 : ' + ${user.???}" />  -->
+                    <!--<p th:text="'현재 연속 출석일 : ' + ${user.???}" />  -->
                     <!-- "연속 출석일" 변수 필요 -->
                 </div>
                 <a th:href="@{/setting}" class="btn">운동하기</a>

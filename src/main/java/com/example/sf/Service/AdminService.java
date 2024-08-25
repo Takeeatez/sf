@@ -29,5 +29,6 @@ public class AdminService {
         fitnessRepository.save(fitness);
     }
 
+
     // 기타 관리자 전용 기능들 추가
 }
