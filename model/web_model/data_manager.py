@@ -4,7 +4,7 @@ import datetime
 import numpy as np
 
 class DataManager:
-    def __init__(self, base_path='exercise_data'):
+    def __init__(self, base_path='src'):
         self.base_path = base_path
         if not os.path.exists(self.base_path):
             os.makedirs(self.base_path)
