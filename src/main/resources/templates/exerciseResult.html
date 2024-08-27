@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>운동 설정 결과</title>
+</head>
+<body>
+<h1>운동 설정 결과</h1>
+<p th:text="'설정 상태: ' + ${status}"></p>
+<p th:text="'운동: ' + ${exercise}"></p>
+<a th:href="@{/myPage}">마이페이지로</a>
+</body>
+</html>

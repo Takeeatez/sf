@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>실시간 운동 감지</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container { margin-top: 50px; }
+        .video-container { text-align: center; }
+        .controls { margin-top: 20px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="text-center">실시간 운동 감지1</h1>
+    <div class="video-container">
+        <img src="http://localhost:5000/video_feed" class="img-fluid" width="640" height="480">
+    </div>
+    <div class="controls text-center">
+        <select id="exercise-select" class="form-control">
+            <option value="스쿼트">스쿼트</option>
+            <option value="푸시업">푸시업</option>
+            <option value="풀업">풀업</option>
+        </select>
+        <input type="number" id="sets-input" class="form-control mt-2" placeholder="세트 수 입력">
+        <input type="number" id="reps-input" class="form-control mt-2" placeholder="세트당 반복 횟수 입력">
+        <button id="start-button" class="btn btn-primary mt-3">운동 시작</button>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<!--    <script>-->
+<!--        $('#start-button').click(function() {-->
+<!--            var exercise = $('#exercise-select').val();-->
+<!--            var sets = $('#sets-input').val();-->
+<!--            var reps = $('#reps-input').val();-->
+<!--            $.get('http://localhost:5000/video_feed', {exercise_type: exercise, sets: sets, reps: reps}, function(data) {-->
+<!--                alert('운동이 설정되었습니다: ' + data.exercise);-->
+<!--            });-->
+<!--        });-->
+<!--    </script>-->
+</body>
+</html>
