@@ -1,3 +1,4 @@
+from flask_cors import CORS
 from flask import Flask, render_template, Response, request, jsonify
 import cv2
 import numpy as np
@@ -7,13 +8,13 @@ from datetime import datetime
 import json
 import os
 
-# Flask 애플리케이션 초기화 시 템플릿 경로 지정
-app = Flask(__name__, template_folder='../../src/main/resources/templates')
+app = Flask(__name__)
+CORS(app)
 camera = cv2.VideoCapture(0)
 detector = poseDetector()
 
 exercise_data = {
-    'exercise_type': '',
+    'exercise_type': 0,
     'sets': 0,
     'reps': 0,
     'accuracy': 0,
@@ -26,12 +27,11 @@ dir = 0
 total_accuracy = 0
 total_count = 0
 start_time = None
-exercise_finished = False  # 운동 종료 상태 플래그
-exercise_checked = False  # 운동 종료가 체크되었는지 여부 플래그
+
 
 # 비디오 스트리밍 및 포즈 감지
 def generate_frames():
-    global count, dir, current_set, total_accuracy, total_count, start_time, exercise_finished, exercise_checked
+    global count, dir, current_set, total_accuracy, total_count, start_time
     while True:
         success, frame = camera.read()
         if not success:
@@ -41,7 +41,7 @@ def generate_frames():
             frame = detector.findPose(frame)
             lmList = detector.findPosition(frame, draw=False)
 
-            if len(lmList) != 0 and exercise_data['exercise_type'] != '' and not exercise_finished:
+            if len(lmList) != 0 and exercise_data['exercise_type'] != '':
                 if exercise_data['exercise_type'] == "스쿼트":
                     angle, feedback = analyze_squat(detector, frame)
                     per = np.interp(angle, (90, 160), (100, 0))
@@ -70,7 +70,7 @@ def generate_frames():
                 frame = put_korean_text(frame, f'횟수: {int(count)}/{exercise_data["reps"]}', (10, 110), 30, color)
 
                 for i, fb in enumerate(feedback):
-                    frame = put_korean_text(frame, fb, (10, 150 + i*40), 30, (0, 0, 255))
+                    frame = put_korean_text(frame, fb, (10, 150 + i * 40), 30, (0, 0, 255))
 
                 # 세트당 반복 횟수가 다 찼을 때만 세트 수 증가
                 if int(count) == exercise_data["reps"]:
@@ -80,9 +80,9 @@ def generate_frames():
                         end_time = datetime.now()
                         duration = (end_time - start_time).total_seconds()
                         avg_accuracy = (total_accuracy / total_count) if total_count > 0 else 0
-                        save_exercise_data(exercise_data["exercise_type"], exercise_data["sets"], exercise_data["reps"], avg_accuracy, duration)
-                        exercise_finished = True  # 운동 종료 상태 설정
-                        exercise_checked = False  # 운동 종료 상태를 아직 확인하지 않음
+                        save_exercise_data(exercise_data["exercise_type"], exercise_data["sets"], exercise_data["reps"],
+                                           avg_accuracy, duration)
+                        break
 
             ret, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
@@ -90,42 +90,55 @@ def generate_frames():
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
+
 # 기본 페이지 라우팅
 @app.route('/')
 def index():
-    return render_template('webcam.html')  # templates 폴더에서 index.html 파일을 찾음
+    return render_template('index.html')
+
 
 # 비디오 스트리밍 라우팅
 @app.route('/video_feed')
 def video_feed():
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
+
 # 운동 설정
 @app.route('/set_exercise', methods=['POST'])
 def set_exercise():
-    global exercise_data, current_set, count, dir, total_accuracy, total_count, start_time, exercise_finished, exercise_checked
-    exercise_data['exercise_type'] = request.form.get('exercise_type')
-    exercise_data['sets'] = int(request.form.get('sets'))
-    exercise_data['reps'] = int(request.form.get('reps'))
+    global exercise_data, current_set, count, dir, total_accuracy, total_count, start_time
+
+    # JSON 데이터 가져오기
+    data = request.get_json()
+
+    # 1. exercise_type 유효성 검사
+    exercise_type = data.get('exercise_type')
+    if not exercise_type or not isinstance(exercise_type, int) or exercise_type <= 0:
+        return jsonify({'status': 'error', 'message': 'Invalid or missing exercise type'}), 400
+
+    # 2. sets 유효성 검사
+    sets = data.get('sets')
+    if not sets or not isinstance(sets, int) or sets <= 0:
+        return jsonify({'status': 'error', 'message': 'Invalid or missing sets value'}), 400
+
+    # 3. reps 유효성 검사
+    reps = data.get('reps')
+    if not reps or not isinstance(reps, int) or reps <= 0:
+        return jsonify({'status': 'error', 'message': 'Invalid or missing reps value'}), 400
+
+    # 모든 유효성 검사를 통과한 경우 데이터 저장
+    exercise_data['exercise_type'] = exercise_type
+    exercise_data['sets'] = sets
+    exercise_data['reps'] = reps
+
     current_set = 0  # 세트 수를 0으로 초기화
     count = 0
     dir = 0
     total_accuracy = 0
     total_count = 0
     start_time = datetime.now()
-    exercise_finished = False  # 운동 종료 상태 초기화
-    exercise_checked = False  # 운동 종료 확인 상태 초기화
-    return jsonify({'status': 'success', 'exercise': exercise_data['exercise_type']})
+    return jsonify({'status': 'success', 'exercise': exercise_type})
 
-# 운동 종료 상태 확인 라우팅
-@app.route('/check_exercise_status')
-def check_exercise_status():
-    global exercise_finished, exercise_checked
-    if exercise_finished and not exercise_checked:
-        exercise_checked = True  # 종료 상태를 확인했으므로 플래그 업데이트
-        return jsonify({'finished': True})
-    else:
-        return jsonify({'finished': False})
 
 if __name__ == '__main__':
     app.run(debug=True)

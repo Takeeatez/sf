@@ -12,7 +12,7 @@ public class UserChoiceEntity {
 
     @Id
     @Column(length = 255)
-    private String choicePK;
+    private Long choicePK;
 
     @ManyToOne
     @JoinColumn(name = "id", nullable = false)
@@ -26,13 +26,13 @@ public class UserChoiceEntity {
     private String time;
 
     @Column(length = 255)
-    private String num;
+    private int num;
 
     @Column(length = 255)
     private String date;
 
     @Column(length = 255)
-    private String sets;
+    private int sets;
 
     @Column(length = 255)
     private String rate;

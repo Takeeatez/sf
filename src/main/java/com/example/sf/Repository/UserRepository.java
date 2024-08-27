@@ -30,4 +30,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     // 전화번호로 사용자 검색
     Optional<UserEntity> findByPhone(String phone);
+
+    @Query("SELECT u.id FROM UserEntity u WHERE u.userId = :userId")
+    Long findUserNoByUserId(@Param("userId") String userId);
 }

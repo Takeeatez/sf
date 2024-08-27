@@ -2,6 +2,7 @@ package com.example.sf.Controller;
 
 import com.example.sf.DTO.UserChoiceDTO;
 import com.example.sf.Service.FitnessTypeService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,20 +10,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+@RequiredArgsConstructor
 public class WebcamController {
 
     private final FitnessTypeService fitnessTypeService;
 
-    // 생성자 주입
-    public WebcamController(FitnessTypeService fitnessTypeService) {
-        this.fitnessTypeService = fitnessTypeService;
-    }
 
     @PostMapping("/saveExercise")
     public String saveExercise(@AuthenticationPrincipal String username,
-                               @RequestParam("exercise1") Integer fitId,
-                               @RequestParam("reps") String reps,
-                               @RequestParam("sets") String sets) {
+                               @RequestParam("exercise1") Long fitId,
+                               @RequestParam("reps") int reps,
+                               @RequestParam("sets") int sets) {
 
         UserChoiceDTO userChoiceDTO = new UserChoiceDTO();
         userChoiceDTO.setUserName(username);

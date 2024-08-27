@@ -15,4 +15,6 @@ public interface FitnessTypeRepository extends JpaRepository<FitnessTypeEntity, 
     // name 컬럼만 가져오는 쿼리
     @Query("SELECT f.name FROM FitnessTypeEntity f")
     List<String> findAllFitnessTypeNames();
+
+    Optional<FitnessTypeEntity> findByFitId(Long fitId);
 }

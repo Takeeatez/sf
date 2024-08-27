@@ -13,7 +13,7 @@ import java.util.List;
 public class FitnessTypeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer fitId;
+    private Long fitId;
 
     @Column(length = 20)
     private String name;

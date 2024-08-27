@@ -2,6 +2,7 @@ package com.example.sf.Service;
 
 import com.example.sf.Entity.FitnessTypeEntity;
 import com.example.sf.Repository.FitnessTypeRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,14 +10,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 @Transactional
 public class FitnessTypeService {
 
     private final FitnessTypeRepository fitnessTypeRepository;
 
-    public FitnessTypeService(FitnessTypeRepository fitnessTypeRepository) {
-        this.fitnessTypeRepository = fitnessTypeRepository;
-    }
 
     // 운동 저장
     public FitnessTypeEntity saveExercise(FitnessTypeEntity fitnessTypeEntity) {
@@ -25,7 +24,7 @@ public class FitnessTypeService {
 
     // 운동 업데이트
     public FitnessTypeEntity updateExercise(FitnessTypeEntity fitnessTypeEntity) {
-        Optional<FitnessTypeEntity> existingEntity = fitnessTypeRepository.findById(fitnessTypeEntity.getFitId());
+        Optional<FitnessTypeEntity> existingEntity = fitnessTypeRepository.findByFitId(fitnessTypeEntity.getFitId());
         if (existingEntity.isPresent()) {
             FitnessTypeEntity updatedEntity = existingEntity.get();
             updatedEntity.setName(fitnessTypeEntity.getName());

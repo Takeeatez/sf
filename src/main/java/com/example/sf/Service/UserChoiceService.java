@@ -29,7 +29,7 @@ public class UserChoiceService {
                 .orElseThrow(() -> new RuntimeException("User not found with username: " + userChoiceDTO.getUserName()));
 
         // FitnessType 찾기
-        FitnessTypeEntity fitnessType = fitnessTypeRepository.findById(userChoiceDTO.getFitnessTypeId())
+        FitnessTypeEntity fitnessType = fitnessTypeRepository.findByFitId(userChoiceDTO.getFitnessTypeId())
                 .orElseThrow(() -> new RuntimeException("FitnessType not found with ID: " + userChoiceDTO.getFitnessTypeId()));
 
         // UserChoiceEntity 생성
