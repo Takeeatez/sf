@@ -8,7 +8,7 @@ import json
 import os
 
 # Flask 애플리케이션 초기화 시 템플릿 경로 지정
-app = Flask(__name__, template_folder='/Users/02.011x/Documents/GitHub/sf/src/my_templates')
+app = Flask(__name__, template_folder='/Users/02.011x/Documents/GitHub/sf/src/main/resources/templates/webcam.html')
 camera = cv2.VideoCapture(0)
 detector = poseDetector()
 
