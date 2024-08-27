@@ -7,7 +7,8 @@ from datetime import datetime
 import json
 import os
 
-app = Flask(__name__)
+# Flask 애플리케이션 초기화 시 템플릿 경로 지정
+app = Flask(__name__, template_folder='/Users/02.011x/Documents/GitHub/sf/src/my_templates')
 camera = cv2.VideoCapture(0)
 detector = poseDetector()
 
@@ -25,10 +26,12 @@ dir = 0
 total_accuracy = 0
 total_count = 0
 start_time = None
+exercise_finished = False  # 운동 종료 상태 플래그
+exercise_checked = False  # 운동 종료가 체크되었는지 여부 플래그
 
 # 비디오 스트리밍 및 포즈 감지
 def generate_frames():
-    global count, dir, current_set, total_accuracy, total_count, start_time
+    global count, dir, current_set, total_accuracy, total_count, start_time, exercise_finished, exercise_checked
     while True:
         success, frame = camera.read()
         if not success:
@@ -38,7 +41,7 @@ def generate_frames():
             frame = detector.findPose(frame)
             lmList = detector.findPosition(frame, draw=False)
 
-            if len(lmList) != 0 and exercise_data['exercise_type'] != '':
+            if len(lmList) != 0 and exercise_data['exercise_type'] != '' and not exercise_finished:
                 if exercise_data['exercise_type'] == "스쿼트":
                     angle, feedback = analyze_squat(detector, frame)
                     per = np.interp(angle, (90, 160), (100, 0))
@@ -78,7 +81,8 @@ def generate_frames():
                         duration = (end_time - start_time).total_seconds()
                         avg_accuracy = (total_accuracy / total_count) if total_count > 0 else 0
                         save_exercise_data(exercise_data["exercise_type"], exercise_data["sets"], exercise_data["reps"], avg_accuracy, duration)
-                        break
+                        exercise_finished = True  # 운동 종료 상태 설정
+                        exercise_checked = False  # 운동 종료 상태를 아직 확인하지 않음
 
             ret, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
@@ -89,7 +93,7 @@ def generate_frames():
 # 기본 페이지 라우팅
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html')  # my_templates 폴더에서 index.html 파일을 찾음
 
 # 비디오 스트리밍 라우팅
 @app.route('/video_feed')
@@ -99,7 +103,7 @@ def video_feed():
 # 운동 설정
 @app.route('/set_exercise', methods=['POST'])
 def set_exercise():
-    global exercise_data, current_set, count, dir, total_accuracy, total_count, start_time
+    global exercise_data, current_set, count, dir, total_accuracy, total_count, start_time, exercise_finished, exercise_checked
     exercise_data['exercise_type'] = request.form.get('exercise_type')
     exercise_data['sets'] = int(request.form.get('sets'))
     exercise_data['reps'] = int(request.form.get('reps'))
@@ -109,7 +113,19 @@ def set_exercise():
     total_accuracy = 0
     total_count = 0
     start_time = datetime.now()
+    exercise_finished = False  # 운동 종료 상태 초기화
+    exercise_checked = False  # 운동 종료 확인 상태 초기화
     return jsonify({'status': 'success', 'exercise': exercise_data['exercise_type']})
+
+# 운동 종료 상태 확인 라우팅
+@app.route('/check_exercise_status')
+def check_exercise_status():
+    global exercise_finished, exercise_checked
+    if exercise_finished and not exercise_checked:
+        exercise_checked = True  # 종료 상태를 확인했으므로 플래그 업데이트
+        return jsonify({'finished': True})
+    else:
+        return jsonify({'finished': False})
 
 if __name__ == '__main__':
     app.run(debug=True)

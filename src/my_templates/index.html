@@ -13,7 +13,7 @@
     <div class="container">
         <h1 class="text-center">실시간 운동 감지</h1>
         <div class="video-container">
-            <img src="{{ url_for('video_feed') }}" class="img-fluid" width="640" height="480">
+            <img id="video-stream" src="{{ url_for('video_feed') }}" class="img-fluid" width="640" height="480">
         </div>
         <div class="controls text-center">
             <select id="exercise-select" class="form-control">
@@ -29,12 +29,29 @@
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script>
+        function checkExerciseStatus() {
+            $.get('/check_exercise_status', function(data) {
+                if (data.finished) {
+                    alert('운동이 종료되었습니다!');
+                    // 초기 화면으로 돌아가기
+                    $('#exercise-select').val('');
+                    $('#sets-input').val('');
+                    $('#reps-input').val('');
+                    $('#video-stream').attr('src', "{{ url_for('video_feed') }}");  // 비디오 스트림 유지
+                } else {
+                    setTimeout(checkExerciseStatus, 1000);  // 1초마다 체크
+                }
+            });
+        }
+
         $('#start-button').click(function() {
             var exercise = $('#exercise-select').val();
             var sets = $('#sets-input').val();
             var reps = $('#reps-input').val();
             $.post('/set_exercise', {exercise_type: exercise, sets: sets, reps: reps}, function(data) {
                 alert('운동이 설정되었습니다: ' + data.exercise);
+                $('#video-stream').attr('src', "{{ url_for('video_feed') }}");  // 비디오 스트림 다시 시작
+                checkExerciseStatus();  // 운동 상태 체크 시작
             });
         });
     </script>
