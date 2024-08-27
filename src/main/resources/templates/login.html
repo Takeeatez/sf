@@ -5,9 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
     <link href="styles/login.css" rel="stylesheet">
 </head>
 
@@ -16,7 +13,7 @@
         <nav>
             <ul>
                 <div>
-                    <li><a th:href="@{/test}" class="SmartFit">SmartFit</a></li>
+                    <li><a th:href="@{/main}" class="SmartFit">SmartFit</a></li>
                 </div>
                 <div class="navbar">
                     <li><a th:href="@{/aboutUs}">About Us</a></li>
@@ -28,7 +25,7 @@
         <div class="overlay"></div>
         <div class="login-container">
             <h1>Login</h1>
-            <form th:action="@{/login}" method="post">
+            <form th:action="@{/login}" method="post" onsubmit="sanitizeInput()">
                 <label for="userid">Id :</label>
                 <input type="text" id="userId" name="userId" required>
 
@@ -40,6 +37,26 @@
             <a th:href="@{/register}" class="register">Register</a>
         </div>
     </div>
+
+    <script>
+        function sanitizeInput() {
+            let userId = document.getElementById('userId').value;
+            let password = document.getElementById('password').value;
+
+            userId = userId.replace(/ /g, '&nbsp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/\n/g, '<br>');
+
+            password = password.replace(/ /g, '&nbsp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/\n/g, '<br>');
+
+            document.getElementById('userId').value = userId;
+            document.getElementById('password').value = password;
+        }
+    </script>
 </body>
 
 </html>
