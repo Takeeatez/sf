@@ -2,8 +2,8 @@ body,
 html {
     margin: 0;
     padding: 0;
+    font-family: 'Arial', sans-serif;
     height: 100%;
-    font-family: 'Noto Sans KR', sans-serif;
     width: 100%;
     overflow: hidden;
     background-color: #000;

@@ -1,69 +1,109 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #1C1F1B;
+body,
+html {
     margin: 0;
     padding: 0;
+    font-family: 'Arial', sans-serif;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background-color: #000;
+}
+
+header {
+    padding-top: 20px;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    top: 0;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    color: #D2FFD2;
+    justify-content: space-between;
+    margin: 0;
+    padding: 0;
+    padding-right: 30px;
+    padding-left: 30px;
 }
 
-.container.webcamPage {
-    background-color: #2A2D28;
+header nav ul li {
+    margin: 0 15px;
+}
+
+header nav ul li a {
+    color: #888;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 24px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+header nav ul li a:hover {
+    color: rgba(0, 0, 0, 1);
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.SmartFit {
+    color: #444;
+    font-weight: bold;
+    font-size: 30px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+
+}
+
+.SmartFit:hover {
+    color: rgba(255, 255, 255, 0.5);
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.navbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+/* ----------header.css---------- */
+
+.hero {
+    position: relative;
+    height: 100vh;
+    background-image: url('../images/main.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.webcam-container {
+    position: relative;
+    z-index: 2;
+    padding: 30px;
+    background-color: rgba(2555, 255, 255, 0.);
     border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
-    width: 90%;
-    max-width: 1000px;
-    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    color: white;
+    width: 75%;
+    height: 70%;
     display: flex;
     flex-direction: column;
-    gap: 20px;
-}
-
-.webcamPage__header {
-    text-align: center;
-    margin-bottom: 20px;
-    width: 100%;
-}
-
-.webcamPage__header h2 {
-    font-size: 1.8em;
-    color: #D2FFD2;
-    margin: 0;
-}
-
-.webcamPage__body {
-    display: flex;
     justify-content: center;
     align-items: center;
-    gap: 30px;
-    width: 100%;
 }
 
-.webcamPage__body__left {
-    flex: 2;
+h1 {
+    /* margin-bottom: 24px; */
+    font-size: 1.8em;
+    color: #444;
 }
 
-.webcamPage__body__left__webcam {
-    width: 100%;
-    max-width: 600px;
-    border: 2px solid #4CAF50;
-    border-radius: 12px;
-    background-color: #5A5D58;
-}
-
-.webcamPage__body__right {
-    flex: 1;
-    background-color: #5A5D58;
-    border-radius: 12px;
-    padding: 20px;
-    color: #D2FFD2;
-    text-align: left;
-}
-
-.webcamPage__body__right p {
-    font-size: 1.1em;
-    margin-bottom: 0;
+.webcam {
+    background-color: #000;
+    width: 90%;
+    height: 85%;
 }
