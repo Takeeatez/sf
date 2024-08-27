@@ -68,7 +68,8 @@ header nav ul li a:hover {
 
 /* ----------header.css---------- */
 
-.hero {
+.hero,
+image {
     position: relative;
     height: 100vh;
     background-image: url('../images/main.jpg');
@@ -106,4 +107,33 @@ h1 {
     background-color: #000;
     width: 90%;
     height: 85%;
+}
+
+button,
+.btn {
+    width: 200px;
+    padding: 12px;
+    margin-top: 12px;
+    background-color: #444;
+    border: none;
+    border-radius: 50px;
+    color: white;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover,
+.btn:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+    color: #444;
+    border: none;
+}
+
+form {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }

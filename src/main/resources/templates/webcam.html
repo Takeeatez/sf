@@ -26,9 +26,12 @@
         <div class="overlay"></div>
         <div class="webcam-container">
             <h1>스마트핏과 함께 건강해져 보세요!</h1>
-            <div class="webcam">
-                <img id="video-stream" th:src="@{/video_feed}">
-            </div>
+            <form th:action="@{/myPage}" method="post">
+                <div class="webcam">
+                    <img id="video-stream" th:src="@{/video_feed}">
+                </div>
+                <button type="submit" class="btn">설정</button>
+            </form>
         </div>
     </div>
 </body>
