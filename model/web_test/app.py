@@ -8,7 +8,7 @@ import json
 import os
 
 # Flask 애플리케이션 초기화 시 템플릿 경로 지정
-app = Flask(__name__, template_folder='/Users/02.011x/Documents/GitHub/sf/src/main/resources/templates/webcam.html')
+app = Flask(__name__, template_folder='../../src/main/resources/templates')
 camera = cv2.VideoCapture(0)
 detector = poseDetector()
 
@@ -93,7 +93,7 @@ def generate_frames():
 # 기본 페이지 라우팅
 @app.route('/')
 def index():
-    return render_template('index.html')  # my_templates 폴더에서 index.html 파일을 찾음
+    return render_template('webcam.html')  # templates 폴더에서 index.html 파일을 찾음
 
 # 비디오 스트리밍 라우팅
 @app.route('/video_feed')
