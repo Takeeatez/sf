@@ -63,12 +63,19 @@ SmartFit은 운동 활동을 실시간으로 기록·분석해 운동 동기를 
 # 워크플로우
 
 - System Architecture
+
   ![System Architecture](./images/systemArchitecture.png)
+
 - Task Flow
+
   ![Task Flow](./images/taskFlow.png)
+
 - Screen Flow
+
   ![Screen Flow](./images/screenFlow.png)
+
 - Model Architecture
+
   ![Model Architecture](./images/modelArchitecture.png)
 
 <br/>
