@@ -200,7 +200,7 @@ Flask와 Gradle Wrapper 스크립트를 정상적으로 실행했다면, 브라�
           </tr>
           <tr>
             <td>담당 : 모델 구축<br/>이메일 : wjddlrtkd0110@naver.com<br/>깃허브 : dlrtkd0110</td>
-            <td>담당 : Backend 이메일 : choeiji13@gmail.com 깃허브 : Takeeatez</td></td>
+            <td>담당 : Backend<br/>이메일 : choeiji13@gmail.com<br/> 깃허브 : Takeeatez</td></td>
             <td>담당 : Frontend<br/>이메일 : osm374@gmail.com <br/>깃허브 : Suuuuuuuuuumin</td>
           </tr>
         </tr>
