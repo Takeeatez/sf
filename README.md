@@ -190,7 +190,7 @@ Flask와 Gradle Wrapper 스크립트를 정상적으로 실행했다면, 브라�
         <tr>
           <tr>
             <td align='center'><a href="https:/github.com/iksang0110"><img src="./images/iksang.png" width="100" height="100"></td>
-            <td align='center'><a href="https:/github.com/Takeetnez"><img src="./images/ez.png" width="100" height="100"></td>
+            <td align='center'><a href="https:/github.com/Takeatez"><img src="./images/ez.png" width="100" height="100"></td>
             <td align='center'><a href="https:/github.com/Suuuuuuuuuumin"><img src="./images/sumin.png" width="100" height="100"></td>
           </tr>
           <tr>
