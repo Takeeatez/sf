@@ -14,10 +14,10 @@ SmartFit은 운동 활동을 실시간으로 기록·분석해 운동 동기를 
 | --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Language                    | ![html](./images/stacks$tools/html.png)![Java](./images/stacks$tools/java.png)![python](./images/stacks$tools/python.png)![css](./images/stacks$tools/css.png)![JavaScript](./images/stacks$tools/javaScript.png) |
 | Framework                   | ![Spring Boot](./images/stacks$tools/springBoot.png)![Thymeleaf](./images/stacks$tools/thymeleaf.png)![Flask](./images/stacks$tools/flask.png)                                                                    |
-| IDE                         | ![VScode](./images/stacks$tools/vscode.png)![IntelliJ](./images/stacks$tools/IntelliJ.png)                                                                                                                        |
-| Source Code Management      | ![Git](./images/stacks$tools/Git.png)![Github](./images/stacks$tools/Github.png)                                                                                                                                  |
+| IDE                         | ![VScode](./images/stacks$tools/vscode.png)![IntelliJ](./images/stacks$tools/intelliJ.png)                                                                                                                        |
+| Source Code Management      | ![Git](./images/stacks$tools/git.png)![Github](./images/stacks$tools/github.png)                                                                                                                                  |
 | Test                        | ![liveServer](./images/stacks$tools/liveServer.png)                                                                                                                                                               |
-| Project Document Management | ![Notion](./images/stacks$tools/Notion.png)![Figma](./images/stacks$tools/Figma.png)![canva](./images/stacks$tools/canva.png)![erdcloud](./images/stacks$tools/erdcloud.png)                                      |
+| Project Document Management | ![Notion](./images/stacks$tools/notion.png)![Figma](./images/stacks$tools/figma.png)![canva](./images/stacks$tools/canva.png)![erdcloud](./images/stacks$tools/erdcloud.png)                                      |
 | Collaboration Tools         | ![Zoom](./images/stacks$tools/zoom.png) ![Kakao](./images/stacks$tools/kakao.png)                                                                                                                                 |
 
 <br/>
