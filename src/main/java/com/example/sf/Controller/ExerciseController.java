@@ -1,6 +1,5 @@
 package com.example.sf.Controller;
 
-
 import com.example.sf.DTO.UserChoiceDTO;
 import com.example.sf.Service.IdCheckService;
 import lombok.RequiredArgsConstructor;
@@ -32,9 +31,9 @@ public class ExerciseController {
     }
 
     @PostMapping("/exerciseResult")
-    public String setExercise(@RequestParam("exercise1") Long exerciseType,
-                              @RequestParam("sets") int sets,
-                              @RequestParam("reps") int reps,
+    public String setExercise(@RequestParam("exercise1") String exerciseType,
+                              @RequestParam("sets") String sets,
+                              @RequestParam("reps") String reps,
                               Model model,
                               Principal principal) {
 
@@ -42,9 +41,20 @@ public class ExerciseController {
 
         // 요청 데이터 생성
         Map<String, Object> requestData = new HashMap<>();
-        requestData.put("exercise_type", exerciseType);
-        requestData.put("sets", sets);
-        requestData.put("reps", reps);
+        try {
+            // String to Integer 변환
+            int exerciseTypeInt = Integer.parseInt(exerciseType);
+            int setsInt = Integer.parseInt(sets);
+            int repsInt = Integer.parseInt(reps);
+
+            requestData.put("exercise_type", exerciseTypeInt);
+            requestData.put("sets", setsInt);
+            requestData.put("reps", repsInt);
+        } catch (NumberFormatException e) {
+            // 변환 오류가 발생한 경우 처리
+            log.error("Invalid input for exercise parameters", e);
+            return "error"; // 오류 페이지로 리디렉션 또는 오류 메시지 처리
+        }
 
         // JSON 형식으로 데이터 전송하기 위한 설정
         HttpHeaders headers = new HttpHeaders();
@@ -55,23 +65,15 @@ public class ExerciseController {
         String flaskUrl = "http://localhost:5000/set_exercise";
 
         // Flask 서버로 요청 보내기
-        ResponseEntity<Map> response = restTemplate.postForEntity(flaskUrl, entity, Map.class);
+        ResponseEntity<String> response = restTemplate.postForEntity(flaskUrl, entity, String.class);
 
-        Integer exerciseTypeInt = (Integer) response.getBody().get("exercise");
-        Long exerciseTypeLong = exerciseTypeInt.longValue();
+        // 응답 로그 기록
+        log.info("Response from Flask server: " + response.getBody());
 
-        UserChoiceDTO userChoiceDTO = new UserChoiceDTO();
-        userChoiceDTO.setUserId(userPk);
-        userChoiceDTO.setFitnessTypeId(exerciseTypeLong);
-        log.info(userChoiceDTO);
-
-
-
-        // Flask에서 받은 응답을 모델에 추가
-        model.addAttribute("status", response.getBody().get("status"));
-        model.addAttribute("exercise", response.getBody().get("exercise"));
-
-        // 결과 페이지로 리다이렉트
-        return "cam"; // exerciseResult.html을 렌더링
+        // 응답 결과에 따라 처리
+        model.addAttribute("exerciseType", exerciseType);
+        model.addAttribute("sets", sets);
+        model.addAttribute("reps", reps);
+        return "exerciseResult"; // View name for the result page
     }
 }

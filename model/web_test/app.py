@@ -8,13 +8,13 @@ from datetime import datetime
 import json
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='../../src/main/resources/templates')
 CORS(app)
 camera = cv2.VideoCapture(0)
 detector = poseDetector()
 
 exercise_data = {
-    'exercise_type': 0,
+    'exercise_type': "",
     'sets': 0,
     'reps': 0,
     'accuracy': 0,
@@ -41,7 +41,7 @@ def generate_frames():
             frame = detector.findPose(frame)
             lmList = detector.findPosition(frame, draw=False)
 
-            if len(lmList) != 0 and exercise_data['exercise_type'] != '':
+            if len(lmList) != 0 and exercise_data['exercise_type'] != "":
                 if exercise_data['exercise_type'] == "스쿼트":
                     angle, feedback = analyze_squat(detector, frame)
                     per = np.interp(angle, (90, 160), (100, 0))
@@ -94,7 +94,7 @@ def generate_frames():
 # 기본 페이지 라우팅
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('setting.html')
 
 
 # 비디오 스트리밍 라우팅
@@ -111,9 +111,16 @@ def set_exercise():
     # JSON 데이터 가져오기
     data = request.get_json()
 
+    # 운동 유형 변환
+    exercise_type_map = {
+        1: "스쿼트",
+        2: "푸시업",
+        3: "풀업"
+    }
+
     # 1. exercise_type 유효성 검사
-    exercise_type = data.get('exercise_type')
-    if not exercise_type or not isinstance(exercise_type, int) or exercise_type <= 0:
+    exercise_type = exercise_type_map.get(data.get('exercise_type'))
+    if not exercise_type:
         return jsonify({'status': 'error', 'message': 'Invalid or missing exercise type'}), 400
 
     # 2. sets 유효성 검사

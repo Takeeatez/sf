@@ -43,10 +43,41 @@
                     <label for="sets">세트 수</label>
                     <input type="number" id="sets" name="sets" min="1">
                 </div>
-                <button type="submit" class="btn">설정 저장</button>
+                <button type="button" id="save-settings" class="btn">설정 저장</button>
             </form>
         </section>
     </div>
+
+    <!-- JavaScript 코드 추가 -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $('#save-settings').click(function() {
+            var exerciseType = $('#exercise1').val();
+            var sets = $('#sets').val();
+            var reps = $('#reps').val();
+
+            // JSON 형식으로 데이터를 전송
+            $.ajax({
+                url: 'http://localhost:5000/set_exercise',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    exercise_type: parseInt(exerciseType), // 운동 유형을 숫자로 변환
+                    sets: parseInt(sets),
+                    reps: parseInt(reps)
+                }),
+                success: function(data) {
+                    alert('운동이 설정되었습니다: ' + data.exercise);
+                    // 운동 설정이 완료되면 비디오 페이지로 이동
+                    window.location.href = 'http://localhost:5000/video_feed';
+                },
+                error: function(error) {
+                    alert('운동 설정 중 오류가 발생했습니다.');
+                }
+            });
+        });
+    </script>
+
 </body>
 
 </html>
