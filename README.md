@@ -1,6 +1,6 @@
 # SmartFit
 
-SmartFit은 운동 활동을 실시간으로 기록·분석해 운동 동기를 장려합니다.
+Hello, SmartFit!
 
 <br/>
 
@@ -84,41 +84,47 @@ SmartFit은 운동 활동을 실시간으로 기록·분석해 운동 동기를 
 
 <br/>
 
-# 프로젝트 설치 방법
+# 프로젝트 실행 방법
+</br>
 
-## Flask 어플리케이션 실행
+## Flask Server 실행
 
-1. Flask 설치유무를 확인하고 설치가 되지 않았다면 pip를 활용하여 설치합니다.
+1. 파이썬 설치 유무를 확인합니다.
 
+2. 파일 내에 가상환경을 설정합니다.
+
+Mac
 ```
 pip install flask
 ```
+Window
+```
+Window
+python -m venv myenv
+```
 
-2. Flask 어플리케이션을 실행합니다.
+
+3. Flask 서버를 실행합니다.
+
+```
+cd model/web_test
+```
 
 ```
 python app.py
 ```
 
-## Gradle Wrapper 스크립트 실행
+## SpringBoot 서버 실행방법
 
-1. Linux나 Mac을 사용하는 경우, ./gradlew에 실행 권한이 없을 수 있습니다.
+1. 파일 내에 있는 build.gralde의 코끼리 버튼이나, 직접 실행하여 build를 완료합니다.
 
-해결 방법 : 다음 명령어를 통해 실행 권한을 부여할 수 있습니다.
 
-```
-chmod +x ./gradlew
-```
-
-2. Gradle Wrapper 스크립트를 실행합니다.
-
-```
-./gradlew boot run
-```
+2. Applcation을 실행합니다.
 
 ## 로컬 브라우저 방문
 
-Flask와 Gradle Wrapper 스크립트를 정상적으로 실행했다면, 브라우저를 열고 'localhost:8080'을 방문하여 프로덕트를 확인 할 수 있습니다.
+
+localhost:8080로 접속하면 서비스를 이용할 수 있습니다.
 
 <br/>
 
